@@ -1,0 +1,590 @@
+[
+ {
+  "path": "/product/import-placeholder-for-18/",
+  "live": {
+   "status": 301,
+   "location": "/product/kraft-burger-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/kraft-burger-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/import-placeholder-for-27/",
+  "live": {
+   "status": 301,
+   "location": "/product/black-burger-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/black-burger-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/import-placeholder-for-32/",
+  "live": {
+   "status": 301,
+   "location": "/product/mini-burger-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/mini-burger-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/import-placeholder-for-37/",
+  "live": {
+   "status": 301,
+   "location": "/product/paper-burger-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/paper-burger-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/import-placeholder-for-42/",
+  "live": {
+   "status": 301,
+   "location": "/product/slider-burger-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/slider-burger-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/import-placeholder-for-47/",
+  "live": {
+   "status": 301,
+   "location": "/product/pink-burger-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/pink-burger-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/import-placeholder-for-52/",
+  "live": {
+   "status": 301,
+   "location": "/product/burger-patty-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/burger-patty-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/import-placeholder-for-58/",
+  "live": {
+   "status": 301,
+   "location": "/product/frozen-burger-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/frozen-burger-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/import-placeholder-for-63/",
+  "live": {
+   "status": 301,
+   "location": "/product/bagasse-burger-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/bagasse-burger-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/import-placeholder-for-68/",
+  "live": {
+   "status": 301,
+   "location": "/product/cardboard-burger-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/cardboard-burger-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/import-placeholder-for-73/",
+  "live": {
+   "status": 301,
+   "location": "/product/takeaway-burger-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/takeaway-burger-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/import-placeholder-for-78/",
+  "live": {
+   "status": 301,
+   "location": "/product/clamshell-burger-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/clamshell-burger-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/import-placeholder-for-83/",
+  "live": {
+   "status": 301,
+   "location": "/product/personalised-burger-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/personalised-burger-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/import-placeholder-for-90/",
+  "live": {
+   "status": 301,
+   "location": "/product/branded-burger-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/branded-burger-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/import-placeholder-for-95/",
+  "live": {
+   "status": 301,
+   "location": "/product/premium-burger-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/premium-burger-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/import-placeholder-for-101/",
+  "live": {
+   "status": 301,
+   "location": "/product/large-burger-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/large-burger-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/import-placeholder-for-107/",
+  "live": {
+   "status": 301,
+   "location": "/product/white-burger-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/white-burger-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/import-placeholder-for-113/",
+  "live": {
+   "status": 301,
+   "location": "/product/polystyrene-burger-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/polystyrene-burger-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/import-placeholder-for-118/",
+  "live": {
+   "status": 301,
+   "location": "/product/cheap-burger-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/cheap-burger-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/import-placeholder-for-123/",
+  "live": {
+   "status": 301,
+   "location": "/product/printed-burger-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/printed-burger-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/import-placeholder-for-129/",
+  "live": {
+   "status": 301,
+   "location": "/product/burger-and-chip-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/burger-and-chip-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/import-placeholder-for-134/",
+  "live": {
+   "status": 301,
+   "location": "/product/disposable-burger-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/disposable-burger-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/import-placeholder-for-139/",
+  "live": {
+   "status": 301,
+   "location": "/product/corrugated-burger-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/corrugated-burger-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/import-placeholder-for-144/",
+  "live": {
+   "status": 301,
+   "location": "/product/tall-burger-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/tall-burger-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/import-placeholder-for-149/",
+  "live": {
+   "status": 301,
+   "location": "/product/styrofoam-burger-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/styrofoam-burger-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/import-placeholder-for-154/",
+  "live": {
+   "status": 301,
+   "location": "/product/brown-burger-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/brown-burger-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/import-placeholder-for-159/",
+  "live": {
+   "status": 301,
+   "location": "/product/burger-parcel-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/burger-parcel-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/import-placeholder-for-164/",
+  "live": {
+   "status": 301,
+   "location": "/product/double-burger-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/double-burger-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/import-placeholder-for-169/",
+  "live": {
+   "status": 301,
+   "location": "/product/red-burger-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/red-burger-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product/biodegradable-burger-boxes-bulk/",
+  "live": {
+   "status": 301,
+   "location": "/product/biodegradable-burger-boxes/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/product/biodegradable-burger-boxes/"
+  },
+  "match": true
+ },
+ {
+  "path": "/products/page/1/",
+  "live": {
+   "status": 301,
+   "location": "/products/"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/products/"
+  },
+  "match": true
+ },
+ {
+  "path": "/sitemap.xml",
+  "live": {
+   "status": 301,
+   "location": "/sitemap_index.xml"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/sitemap_index.xml"
+  },
+  "match": true
+ },
+ {
+  "path": "/wp-sitemap.xml",
+  "live": {
+   "status": 301,
+   "location": "/sitemap_index.xml"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/sitemap_index.xml"
+  },
+  "match": true
+ },
+ {
+  "path": "/wp-sitemap-posts-post-1.xml",
+  "live": {
+   "status": 301,
+   "location": "/post-sitemap.xml"
+  },
+  "astro": {
+   "status": 301,
+   "location": "/post-sitemap.xml"
+  },
+  "match": true
+ },
+ {
+  "path": "/my-account/customer-logout/",
+  "live": {
+   "status": 302,
+   "location": "/my-account/"
+  },
+  "astro": {
+   "status": 302,
+   "location": "/my-account/"
+  },
+  "match": true
+ },
+ {
+  "path": "/product-category/Boxes-By-Material/",
+  "live": {
+   "status": 200,
+   "location": ""
+  },
+  "astro": {
+   "status": 200,
+   "location": ""
+  },
+  "match": true
+ },
+ {
+  "path": "/product-category/Boxes-By-Type/",
+  "live": {
+   "status": 200,
+   "location": ""
+  },
+  "astro": {
+   "status": 200,
+   "location": ""
+  },
+  "match": true
+ },
+ {
+  "path": "/product-category/Boxes-By-Customization/",
+  "live": {
+   "status": 200,
+   "location": ""
+  },
+  "astro": {
+   "status": 200,
+   "location": ""
+  },
+  "match": true
+ },
+ {
+  "path": "/product-category/boxes-by-Color/",
+  "live": {
+   "status": 200,
+   "location": ""
+  },
+  "astro": {
+   "status": 200,
+   "location": ""
+  },
+  "match": true
+ },
+ {
+  "path": "/feed/",
+  "live": {
+   "status": 200,
+   "location": ""
+  },
+  "astro": {
+   "status": 200,
+   "location": ""
+  },
+  "match": true
+ },
+ {
+  "path": "/comments/feed/",
+  "live": {
+   "status": 200,
+   "location": ""
+  },
+  "astro": {
+   "status": 200,
+   "location": ""
+  },
+  "match": true
+ },
+ {
+  "path": "/?add-to-cart=500",
+  "live": {
+   "status": 410,
+   "location": ""
+  },
+  "astro": {
+   "status": 410,
+   "location": ""
+  },
+  "match": true
+ },
+ {
+  "path": "/cart/?add-to-cart=1457",
+  "live": {
+   "status": 410,
+   "location": ""
+  },
+  "astro": {
+   "status": 410,
+   "location": ""
+  },
+  "match": true
+ },
+ {
+  "path": "/nonexistent-page-xyz/",
+  "live": {
+   "status": 404,
+   "location": ""
+  },
+  "astro": {
+   "status": 404,
+   "location": ""
+  },
+  "match": true
+ },
+ {
+  "path": "/shop/",
+  "live": {
+   "status": 404,
+   "location": ""
+  },
+  "astro": {
+   "status": 404,
+   "location": ""
+  },
+  "match": true
+ },
+ {
+  "path": "/product-tag/burger/",
+  "live": {
+   "status": 404,
+   "location": ""
+  },
+  "astro": {
+   "status": 404,
+   "location": ""
+  },
+  "match": true
+ },
+ {
+  "path": "/robots.txt",
+  "live": {
+   "status": 200,
+   "location": ""
+  },
+  "astro": {
+   "status": 200,
+   "location": ""
+  },
+  "match": true
+ },
+ {
+  "path": "/sitemap_index.xml",
+  "live": {
+   "status": 200,
+   "location": ""
+  },
+  "astro": {
+   "status": 200,
+   "location": ""
+  },
+  "match": true
+ },
+ {
+  "path": "/product-sitemap.xml",
+  "live": {
+   "status": 200,
+   "location": ""
+  },
+  "astro": {
+   "status": 200,
+   "location": ""
+  },
+  "match": true
+ }
+]
