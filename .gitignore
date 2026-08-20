@@ -1,0 +1,12 @@
+# Recovered WordPress backup: never publish, never deploy.
+*.wpress
+_wpress/
+_migration/
+site/node_modules/
+site/dist/
+site/.vercel/
+site/.astro/
+.env
+.env.*
+.DS_Store
+._*

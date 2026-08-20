@@ -1,0 +1,8 @@
+{
+ "/product-category/Boxes-By-Material/": "/product-category/boxes-by-material/",
+ "/product-category/Boxes-By-Type/": "/product-category/boxes-by-type/",
+ "/product-category/Boxes-By-Customization/": "/product-category/boxes-by-customization/",
+ "/product-category/boxes-by-Color/": "/product-category/boxes-by-color/",
+ "/feed/": "/feed.xml",
+ "/comments/feed/": "/comments-feed.xml"
+}

@@ -1,0 +1,5 @@
+---
+import { region } from '../lib/chrome.js';
+const { page } = Astro.props;
+---
+<Fragment set:html={region('offcanvas', page)} />

@@ -1,0 +1,10 @@
+---
+// The theme's 404 page, captured from the live site. Vercel serves dist/404.html
+// for any path that does not resolve, which is what WordPress did.
+import pages from '../data/pages.json';
+import { rewrite } from '../lib/site.js';
+import Shell from '../layouts/Shell.astro';
+
+const page = pages._404;
+---
+<Shell page={page}><Fragment set:html={rewrite(page.content)} /></Shell>

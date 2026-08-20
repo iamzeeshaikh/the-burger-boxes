@@ -1,0 +1,19 @@
+---
+// WooCommerce's order-received (thank you) endpoint. Renders the order the
+// visitor just placed, which the checkout stored locally after /api/order
+// accepted it.
+import Shell from '../../layouts/Shell.astro';
+import PageBody from '../../components/PageBody.astro';
+import { cartFlowPage } from '../../lib/cartpages.js';
+
+const page = cartFlowPage({
+  route: '/checkout/order-received/',
+  title: 'Order received - The Burger Boxes',
+  bodyClasses: 'woocommerce-checkout woocommerce-order-received',
+});
+---
+<Shell page={page}>
+  <PageBody postId={8} title="Order received" crumb="Order received" route="/checkout/order-received/">
+    <div id="tbb-order-received"></div>
+  </PageBody>
+</Shell>

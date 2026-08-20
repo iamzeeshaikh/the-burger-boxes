@@ -1,0 +1,32 @@
+---
+// The site chrome, driven by a captured page record. `[...path].astro` renders
+// the migrated pages with it; the cart-flow pages WordPress never served as
+// static HTML (checkout, order received) borrow the cart page's record so they
+// inherit the same head, body classes, header, footer and scripts.
+//
+// The literal whitespace between regions is the theme's own; it is emitted from
+// constants rather than from the template so the built markup stays
+// byte-identical to what WordPress served.
+import { rewrite } from '../lib/site.js';
+import { skipLink } from '../lib/chrome.js';
+import Header from '../components/Header.astro';
+import Offcanvas from '../components/Offcanvas.astro';
+import Footer from '../components/Footer.astro';
+import JoinChat from '../components/JoinChat.astro';
+
+const { page } = Astro.props;
+const OPEN_MAIN = '<div id="main-container" class="site">\n\t\t\t';
+const SEP_HEADER = '\n\t\t\t\t';
+const SEP_OFFCANVAS = '\n\t\t\n\t\t';
+const SEP_CONTENT = '\n\t\t\t\t\t\t';
+const SEP_FOOTER = '\n\t\t\t\t\t\t';
+const CLOSE_MAIN = '\n\t\t\t\t</div><!-- #page -->';
+// The WhatsApp widget sits between the late stylesheets and the vendor scripts
+// WordPress prints after the page wrapper, so bodyTail is split around it.
+const [tailBefore, tailAfter = ''] = rewrite(page.bodyTail).split('<!--JOINCHAT-->');
+---
+<!DOCTYPE html>
+<html lang="en-US"><head><Fragment set:html={rewrite(page.head)} /></head>
+
+<body class={page.bodyClass}><Fragment set:html={rewrite(page.bodyOpen) + OPEN_MAIN + skipLink + SEP_HEADER} /><Header page={page} /><Fragment set:html={SEP_OFFCANVAS} /><Offcanvas page={page} /><Fragment set:html={SEP_CONTENT} /><slot /><Fragment set:html={SEP_FOOTER} /><Footer page={page} /><Fragment set:html={CLOSE_MAIN + tailBefore} /><JoinChat page={page} /><Fragment set:html={tailAfter} /><script src="/assets/cart.js" defer></script></body>
+</html>

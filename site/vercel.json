@@ -1,0 +1,274 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "astro build",
+  "outputDirectory": "dist",
+  "trailingSlash": true,
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.theburgerboxes.com"
+        }
+      ],
+      "destination": "https://theburgerboxes.com/$1",
+      "permanent": true
+    },
+    {
+      "source": "/my-account/customer-logout",
+      "destination": "https://theburgerboxes.com/my-account/",
+      "permanent": false
+    },
+    {
+      "source": "/product/biodegradable-burger-boxes-bulk",
+      "destination": "https://theburgerboxes.com/product/biodegradable-burger-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-101",
+      "destination": "https://theburgerboxes.com/product/large-burger-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-107",
+      "destination": "https://theburgerboxes.com/product/white-burger-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-113",
+      "destination": "https://theburgerboxes.com/product/polystyrene-burger-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-118",
+      "destination": "https://theburgerboxes.com/product/cheap-burger-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-123",
+      "destination": "https://theburgerboxes.com/product/printed-burger-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-129",
+      "destination": "https://theburgerboxes.com/product/burger-and-chip-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-134",
+      "destination": "https://theburgerboxes.com/product/disposable-burger-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-139",
+      "destination": "https://theburgerboxes.com/product/corrugated-burger-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-144",
+      "destination": "https://theburgerboxes.com/product/tall-burger-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-149",
+      "destination": "https://theburgerboxes.com/product/styrofoam-burger-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-154",
+      "destination": "https://theburgerboxes.com/product/brown-burger-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-159",
+      "destination": "https://theburgerboxes.com/product/burger-parcel-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-164",
+      "destination": "https://theburgerboxes.com/product/double-burger-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-169",
+      "destination": "https://theburgerboxes.com/product/red-burger-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-18",
+      "destination": "https://theburgerboxes.com/product/kraft-burger-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-27",
+      "destination": "https://theburgerboxes.com/product/black-burger-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-32",
+      "destination": "https://theburgerboxes.com/product/mini-burger-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-37",
+      "destination": "https://theburgerboxes.com/product/paper-burger-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-42",
+      "destination": "https://theburgerboxes.com/product/slider-burger-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-47",
+      "destination": "https://theburgerboxes.com/product/pink-burger-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-52",
+      "destination": "https://theburgerboxes.com/product/burger-patty-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-58",
+      "destination": "https://theburgerboxes.com/product/frozen-burger-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-63",
+      "destination": "https://theburgerboxes.com/product/bagasse-burger-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-68",
+      "destination": "https://theburgerboxes.com/product/cardboard-burger-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-73",
+      "destination": "https://theburgerboxes.com/product/takeaway-burger-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-78",
+      "destination": "https://theburgerboxes.com/product/clamshell-burger-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-83",
+      "destination": "https://theburgerboxes.com/product/personalised-burger-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-90",
+      "destination": "https://theburgerboxes.com/product/branded-burger-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/product/import-placeholder-for-95",
+      "destination": "https://theburgerboxes.com/product/premium-burger-boxes/",
+      "permanent": true
+    },
+    {
+      "source": "/products/page/1",
+      "destination": "https://theburgerboxes.com/products/",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "query",
+          "key": "add-to-cart"
+        }
+      ],
+      "destination": "/api/gone"
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "query",
+          "key": "s"
+        }
+      ],
+      "destination": "/api/search"
+    },
+    {
+      "source": "/page/:n(\\d+)",
+      "has": [
+        {
+          "type": "query",
+          "key": "s"
+        }
+      ],
+      "destination": "/api/search"
+    },
+    {
+      "source": "/wp-admin/admin-ajax.php",
+      "destination": "/api/admin-ajax"
+    },
+    {
+      "source": "/comments/feed",
+      "destination": "/comments-feed.xml"
+    },
+    {
+      "source": "/feed",
+      "destination": "/feed.xml"
+    },
+    {
+      "source": "/product-category/Boxes-By-Customization",
+      "destination": "/product-category/boxes-by-customization/"
+    },
+    {
+      "source": "/product-category/Boxes-By-Material",
+      "destination": "/product-category/boxes-by-material/"
+    },
+    {
+      "source": "/product-category/Boxes-By-Type",
+      "destination": "/product-category/boxes-by-type/"
+    },
+    {
+      "source": "/product-category/boxes-by-Color",
+      "destination": "/product-category/boxes-by-color/"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": ".*\\.vercel\\.app"
+        }
+      ],
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/feed/",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/rss+xml; charset=UTF-8"
+        }
+      ]
+    },
+    {
+      "source": "/comments/feed/",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/rss+xml; charset=UTF-8"
+        }
+      ]
+    }
+  ]
+}

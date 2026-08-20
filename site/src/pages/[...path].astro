@@ -1,0 +1,22 @@
+---
+import pages from '../data/pages.json';
+import { rewrite } from '../lib/site.js';
+import Shell from '../layouts/Shell.astro';
+
+// `_404` is served by src/pages/404.astro and `_search` by the /?s= endpoint,
+// so neither is built as a normal route.
+export function getStaticPaths() {
+  const NOT_ROUTES = new Set(['_404', '_search']);
+  return Object.values(pages)
+    .filter((page) => !NOT_ROUTES.has(page.slug))
+    .map((page) => ({
+      // Astro's rest param wants the path without leading/trailing slash;
+      // trailingSlash: 'always' + build.format 'directory' restore them.
+      params: { path: page.route === '/' ? undefined : page.route.slice(1, -1) },
+      props: { page },
+    }));
+}
+
+const { page } = Astro.props;
+---
+<Shell page={page}><Fragment set:html={rewrite(page.content)} /></Shell>
