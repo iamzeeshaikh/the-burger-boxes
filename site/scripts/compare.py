@@ -33,9 +33,11 @@ def parse(html, host):
         t.decompose()
 
     def norm(u):
+        # both sides are reduced to host-relative so the staging origin and the
+        # production origin compare equal
         if not u:
             return u
-        u = u.replace(host, '')
+        u = u.replace(host, '').replace(LIVE_HOST, '')
         u = re.sub(r'\?ver=[^&"\']*', '', u)
         return u
 
@@ -56,7 +58,10 @@ def parse(html, host):
         'links': sorted({norm(a['href']) for a in s.find_all('a', href=True)}),
         'images': sorted({(norm(i.get('src')) or '', i.get('alt') or '') for i in s.find_all('img')}),
         'stylesheets': [norm(l.get('href')) for l in s.find_all('link', rel='stylesheet')],
-        'scripts': sorted({norm(x.get('src')) for x in s.find_all('script', src=True)}),
+        # third-party tag URLs carry a per-request cache-buster and the page's
+        # own URL, so they are compared by origin + path only
+        'scripts': sorted({re.sub(r'\?.*', '', norm(x.get('src')))
+                           for x in s.find_all('script', src=True)}),
         'forms': [{'action': norm(f.get('action')),
                    'fields': sorted((i.get('name') or '', i.get('type') or i.name,
                                      i.has_attr('required')) for i in f.find_all(['input', 'textarea', 'select'])),

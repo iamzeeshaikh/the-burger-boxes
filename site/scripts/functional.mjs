@@ -110,6 +110,27 @@ check('email link', (await page.locator('a[href^="mailto:"]').count()) > 0,
 check('WhatsApp widget', (await page.locator('.joinchat').count()) > 0);
 check('live chat widget script', (await page.locator('script[src*="chat.zeeops.dev"]').count()) > 0);
 
+// the form must post to this deployment, never back to the WordPress host
+await step('quote form posts to this site', async () => {
+  const form = page.locator('form.elementor-form[name="Instant Quote"]').first();
+  await form.locator('input[name="form_fields[name]"]').fill('QA Bot');
+  await form.locator('input[name="form_fields[email]"]').fill('qa@example.com');
+  await form.locator('input[name="form_fields[field_f54cfcb]"]').fill('5551234567');
+  const [request] = await Promise.all([
+    page.waitForRequest((r) => r.url().includes('admin-ajax.php') && r.method() === 'POST',
+      { timeout: 20000 }),
+    form.locator('button[type="submit"]').click(),
+  ]);
+  const sameOrigin = request.url().startsWith(base);
+  return [sameOrigin, request.url()];
+});
+await step('form shows the server response inline', async () => {
+  await page.waitForTimeout(3000);
+  const msg = await page.locator('form.elementor-form[name="Instant Quote"] .elementor-message')
+    .first().innerText().catch(() => '');
+  return [msg.trim().length > 0, msg.trim()];
+});
+
 // -------------------------------------------------------------- cart flow
 await reveal(page, 'a.elementor-button[href*="add-to-cart="]');
 await page.locator('a.elementor-button[href*="add-to-cart="]').first().click();
@@ -128,8 +149,10 @@ const subtotal5 = await page.locator('.cart-subtotal .amount').first().innerText
 check('quantity update recalculates', subtotal5.replace(/\s/g, '') === '$1.00', subtotal5);
 
 await page.locator('a.checkout-button').first().click();
-await page.waitForTimeout(2000);
+await page.waitForTimeout(1500);
 check('proceed to checkout', page.url().includes('/checkout/'), page.url());
+// the checkout is rendered once the catalogue has loaded
+await page.waitForSelector('.woocommerce-checkout-review-order-table', { timeout: 20000 }).catch(() => {});
 check('checkout shows the order', (await page.locator('.woocommerce-checkout-review-order-table').count()) > 0);
 check('cash on delivery offered', (await page.locator('#payment_method_cod').count()) > 0);
 
@@ -138,13 +161,24 @@ await page.waitForTimeout(800);
 check('checkout validates required fields',
   (await page.locator('.woocommerce-error').count()) > 0);
 
-await page.locator('a.remove[data-remove]').first().click().catch(() => {});
 await page.goto(base + '/cart/', { waitUntil: 'load' });
-await page.waitForTimeout(1500);
-await page.locator('a.remove[data-remove]').first().click();
-await page.waitForTimeout(800);
-check('removing the last item shows the empty cart',
-  await page.locator('.wp-block-woocommerce-empty-cart-block').first().isVisible());
+await page.waitForSelector('a.remove[data-remove]', { timeout: 20000 }).catch(() => {});
+await step('removing the last item shows the empty cart', async () => {
+  const removals = await page.locator('a.remove[data-remove]').count();
+  for (let i = 0; i < removals; i++) {
+    await page.locator('a.remove[data-remove]').first().click();
+    await page.waitForTimeout(500);
+  }
+  const state = await page.evaluate(() => ({
+    stored: localStorage.getItem('tbb_cart'),
+    rows: document.querySelectorAll('.woocommerce-cart-form__cart-item').length,
+    empty: document.querySelectorAll('.wp-block-woocommerce-empty-cart-block').length,
+    emptyStyle: document.querySelector('.wp-block-woocommerce-empty-cart-block')?.getAttribute('style'),
+  }));
+  const visible = await page.locator('.wp-block-woocommerce-empty-cart-block').first()
+    .isVisible().catch(() => false);
+  return [visible, JSON.stringify(state)];
+});
 
 // ------------------------------------------------------------ status codes
 for (const [path, want] of [['/?add-to-cart=500', 410], ['/nonexistent-page-xyz/', 404]]) {

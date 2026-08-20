@@ -46,8 +46,15 @@ for p in html:
         if pat.search(body):
             problems['possible secret: ' + label].append(rel)
     if p.endswith('.html'):
-        for m in re.finditer(r'(?:src|href)="(https://theburgerboxes\.com/(?:wp-content|wp-includes|wp-admin)/[^"]*)"', body):
-            problems['asset served from the WordPress host'].append('%s -> %s' % (rel, m.group(1)))
+        # Any absolute reference to the old host's asset tree is a live-site
+        # dependency, wherever it appears -- attribute, inline script, or a JSON
+        # settings block a script reads a URL out of. Structured data and
+        # metadata are exempt: those URLs must stay absolute.
+        scrubbed = re.sub(r'(?s)<script[^>]*application/ld\+json[^>]*>.*?</script>', '', body)
+        scrubbed = re.sub(r'<meta[^>]*>', '', scrubbed)
+        scrubbed = re.sub(r'<link[^>]*rel=["\']canonical["\'][^>]*>', '', scrubbed)
+        for m in re.finditer(r'https://theburgerboxes\.com/(?:wp-content|wp-includes|wp-admin)/[^"\'\\ )]*', scrubbed):
+            problems['asset served from the WordPress host'].append('%s -> %s' % (rel, m.group(0)))
         for m in META_RE.finditer(body):
             v = next((g for g in m.groups() if g), '')
             if 'localhost' in v or 'vercel.app' in v or v.startswith('file:'):

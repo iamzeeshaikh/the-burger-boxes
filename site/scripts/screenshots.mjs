@@ -14,10 +14,21 @@ const delay = Number(delayArg || 0);
 const WIDTHS = [1440, 768, 390, 320];
 const only = process.env.ONLY ? process.env.ONLY.split(',') : null;
 
-const list = Object.values(routes)
+const all = Object.values(routes)
   .filter((p) => p.slug !== '_search' && p.slug !== '_404')
   .map((p) => p.route)
   .filter((r) => !only || only.includes(r));
+
+// Every one of the 69 product pages is rendered by the same Elementor template
+// (id 241), so below 1440px a spread of them is screenshotted and the rest are
+// still loaded and measured for horizontal overflow -- which is the thing that
+// varies with content length.
+const products = all.filter((r) => r.startsWith('/product/'));
+const others = all.filter((r) => !r.startsWith('/product/'));
+const step = Math.ceil(products.length / 12);
+const sampled = products.filter((_, i) => i % step === 0);
+const shotList = (w) => (w === 1440 ? all : [...others, ...sampled]);
+const measureOnly = (w) => (w === 1440 ? [] : products.filter((r) => !sampled.includes(r)));
 
 const FREEZE = `
   *, *::before, *::after { animation-duration: 0s !important; animation-delay: 0s !important;
@@ -36,7 +47,8 @@ for (const width of WIDTHS) {
     userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
     reducedMotion: 'reduce',
   });
-  for (const route of list) {
+  for (const route of [...shotList(width), ...measureOnly(width)]) {
+    const shot = shotList(width).includes(route);
     const name = (route === '/' ? 'home' : route.replace(/^\/|\/$/g, '').replace(/\//g, '__')) + '@' + width;
     const page = await ctx.newPage();
     try {
@@ -66,8 +78,8 @@ for (const width of WIDTHS) {
           .slice(0, 5)
           .map((el) => el.tagName + '.' + (el.className || '').toString().split(' ').slice(0, 3).join('.')),
       }));
-      await page.screenshot({ path: path.join(outDir, name + '.png'), fullPage: true });
-      results.push({ route, width, ...overflow });
+      if (shot) await page.screenshot({ path: path.join(outDir, name + '.png'), fullPage: true });
+      results.push({ route, width, screenshot: shot, ...overflow });
     } catch (e) {
       results.push({ route, width, error: String(e.message).slice(0, 120) });
       console.log('ERR', route, width, e.message.slice(0, 80));
@@ -81,5 +93,6 @@ for (const width of WIDTHS) {
 await browser.close();
 fs.writeFileSync(path.join(outDir, '_overflow.json'), JSON.stringify(results, null, 1));
 const bad = results.filter((r) => r.scrollWidth > r.clientWidth + 1);
+console.log('pages measured:', results.length, ' screenshots:', results.filter((r) => r.screenshot).length);
 console.log('pages with horizontal overflow:', bad.length);
 for (const b of bad.slice(0, 20)) console.log('  ', b.width, b.route, b.scrollWidth, '>', b.clientWidth, b.offenders);

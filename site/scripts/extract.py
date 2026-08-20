@@ -59,35 +59,28 @@ DROP_TAG_PATTERNS = [
     r'<link[^>]*rel=["\']alternate["\'][^>]*type=["\']application/rss\+xml["\'][^>]*title=["\'][^"\']*&raquo; .+? Comments Feed["\'][^>]*>',
 ]
 
-# Absolute references to assets we now serve ourselves become root-relative so
-# nothing is ever fetched from the old WordPress host. Only attributes that
-# actually load something are rewritten: metadata (og:image, schema URLs,
-# canonicals) has to keep naming the production domain.
-LOADING_ATTRS = ('src', 'href', 'srcset', 'imagesrcset', 'data-src', 'data-thumb',
-                 'data-thumb-srcset', 'data-large_image', 'data-bg', 'poster')
-ASSET_ATTR = re.compile(
-    r'\b(%s)=(["\'])((?:[^"\']*?)https://theburgerboxes\.com/(?:wp-content|wp-includes|wp-admin)/[^"\']*)\2'
-    % '|'.join(LOADING_ATTRS))
-ASSET_URL_FN = re.compile(r'url\((["\']?)https://theburgerboxes\.com(/(?:wp-content|wp-includes)/[^)"\']*)\1\)')
-# the same origin inside JSON blobs a script consumes as an asset base
-ASSET_ABS_ESC = re.compile(r'https:\\/\\/theburgerboxes\.com(\\/(?:wp-content|wp-includes|wp-admin)\\/)')
-LDJSON = re.compile(r'(?s)(<script[^>]*application/ld\+json[^>]*>.*?</script>)')
+# Absolute references to the old host's asset tree become root-relative so
+# nothing -- markup, inline script config, or a JSON settings block a script
+# reads a URL out of -- is ever fetched from the WordPress host. Structured data
+# and metadata are exempt: canonicals, og:image and schema URLs have to keep
+# naming the production domain.
+ASSET_ORIGIN = re.compile(r'https://theburgerboxes\.com(/(?:wp-content|wp-includes|wp-admin)/)')
+ASSET_ORIGIN_ESC = re.compile(r'https:\\/\\/theburgerboxes\.com(\\/(?:wp-content|wp-includes|wp-admin)\\/)')
+# EAEL prints its plugin directory without a trailing slash
+ASSET_ORIGIN_BARE = re.compile(r'https://theburgerboxes\.com(/wp-content/plugins)(?![\w-])')
+PROTECTED = re.compile(
+    r'(?s)(<script[^>]*application/ld\+json[^>]*>.*?</script>'
+    r'|<meta\b[^>]*>'
+    r'|<link\b[^>]*rel=["\']canonical["\'][^>]*>)')
 
 
 def localise_assets(h):
-    """Point asset references at this site\'s own tree. Structured data and
-    metadata are left alone: those URLs have to stay absolute on the production
-    domain."""
-    parts = LDJSON.split(h)
+    parts = PROTECTED.split(h)
     for i in range(0, len(parts), 2):
         chunk = parts[i]
-        chunk = ASSET_ATTR.sub(
-            lambda m: '%s=%s%s%s' % (m.group(1), m.group(2),
-                                     m.group(3).replace('https://theburgerboxes.com/', '/'),
-                                     m.group(2)),
-            chunk)
-        chunk = ASSET_URL_FN.sub(lambda m: 'url(%s%s%s)' % (m.group(1), m.group(2), m.group(1)), chunk)
-        chunk = ASSET_ABS_ESC.sub(r'\1', chunk)
+        chunk = ASSET_ORIGIN.sub(r'\1', chunk)
+        chunk = ASSET_ORIGIN_ESC.sub(r'\1', chunk)
+        chunk = ASSET_ORIGIN_BARE.sub(r'\1', chunk)
         parts[i] = chunk
     return ''.join(parts)
 

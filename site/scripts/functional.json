@@ -6,7 +6,7 @@
  },
  {
   "name": "main menu top-level items",
-  "ok": false,
+  "ok": true,
   "detail": "6 items"
  },
  {
@@ -100,6 +100,16 @@
   "detail": ""
  },
  {
+  "name": "quote form posts to this site",
+  "ok": true,
+  "detail": "https://site-dun-ten-91.vercel.app/wp-admin/admin-ajax.php"
+ },
+ {
+  "name": "form shows the server response inline",
+  "ok": true,
+  "detail": "There's something wrong. The form is invalid."
+ },
+ {
   "name": "add to cart lands on the cart page",
   "ok": true,
   "detail": "https://site-dun-ten-91.vercel.app/cart/"
@@ -142,7 +152,7 @@
  {
   "name": "removing the last item shows the empty cart",
   "ok": true,
-  "detail": ""
+  "detail": "{\"stored\":\"{}\",\"rows\":0,\"empty\":1,\"emptyStyle\":null}"
  },
  {
   "name": "status /?add-to-cart=500",

@@ -1,0 +1,28 @@
+import { chromium } from 'playwright';
+const base='https://site-dun-ten-91.vercel.app';
+const b=await chromium.launch();
+const p=await (await b.newContext({viewport:{width:1440,height:900}})).newPage();
+await p.goto(base+'/product/black-burger-boxes/',{waitUntil:'load'});
+await p.waitForTimeout(2500);
+await p.locator('a.elementor-button[href*="add-to-cart="]').first().scrollIntoViewIfNeeded();
+await p.locator('a.elementor-button[href*="add-to-cart="]').first().click();
+await p.waitForTimeout(2500);
+await p.locator('input[data-qty]').first().fill('5');
+await p.locator('[data-update-cart]').first().click();
+await p.waitForTimeout(900);
+await p.locator('a.checkout-button').first().click();
+await p.waitForTimeout(1500);
+await p.waitForSelector('.woocommerce-checkout-review-order-table',{timeout:20000});
+await p.locator('#place_order').click();
+await p.waitForTimeout(900);
+await p.goto(base+'/cart/',{waitUntil:'load'});
+await p.waitForSelector('a.remove[data-remove]',{timeout:20000}).catch(()=>{});
+const n = await p.locator('a.remove[data-remove]').count();
+console.log('removals', n);
+for (let i=0;i<n;i++){ await p.locator('a.remove[data-remove]').first().click(); await p.waitForTimeout(500); }
+console.log('empty count', await p.locator('.wp-block-woocommerce-empty-cart-block').count());
+console.log('empty visible', await p.locator('.wp-block-woocommerce-empty-cart-block').first().isVisible().catch(e=>'ERR'));
+console.log('style', await p.locator('.wp-block-woocommerce-empty-cart-block').first().evaluate(el=>el.getAttribute('style')).catch(()=>'n/a'));
+console.log('filled', await p.locator('#tbb-cart-filled').count());
+console.log('ls', await p.evaluate(()=>localStorage.getItem('tbb_cart')));
+await b.close();
