@@ -206,6 +206,30 @@ def splice_cart_block(h):
     return h.replace(el, open(CART_BLOCK, encoding="utf-8").read())
 
 
+# WooCommerce Blocks hydrates the cart panel with React against the Store API.
+# There is no Store API here, so the bundle would tear down the markup it finds
+# and leave an empty container -- a race the visitor sometimes loses. The
+# hydrated markup is baked in instead (see splice_cart_block) and cart.js owns
+# the behaviour, so the bundle and the inline config it reads are dropped.
+BLOCKS_SRC = re.compile(
+    r'(?s)<script[^>]*src="[^"]*assets/client/(?:blocks|admin)/[^"]*"[^>]*>\s*</script>\s*')
+BLOCKS_INLINE_IDS = (
+    'wc-settings', 'wc-types', 'wc-blocks', 'blocks-checkout', 'blocks-components',
+    'price-format', 'wc-payment-method-', 'cart-frontend', 'checkout-frontend',
+    'wc-cart-checkout-', 'wp-api-fetch',
+)
+BLOCKS_INLINE = re.compile(r'(?s)<script id="([\w-]+?)-js-(?:extra|before|after)"[^>]*>.*?</script>\s*')
+
+
+def drop_blocks_bundle(h):
+    if 'assets/client/blocks' not in h:
+        return h
+    h = BLOCKS_SRC.sub('', h)
+    h = BLOCKS_INLINE.sub(
+        lambda m: '' if m.group(1).startswith(BLOCKS_INLINE_IDS) else m.group(0), h)
+    return h
+
+
 def read_page(f):
     slug = os.path.basename(f)[:-5]
     raw = clean(open(f, encoding="utf-8", errors="replace").read())
@@ -264,12 +288,13 @@ def main():
             "route": route_for(slug),
             "url": SITE + route_for(slug),
             "bodyClass": bodym.group(1) if bodym else "",
-            "head": head,
+            "head": drop_blocks_bundle(head),
             "content": splice_cart_block(parts["content"]),
             "joinchatSettings": jc.group(1) if jc else "",
             "chromeDiff": chrome_diff,
             "bodyOpen": parts["bodyOpen"],
-            "bodyTail": parts["bodyTail"].replace(parts["joinchat"], "<!--JOINCHAT-->"),
+            "bodyTail": drop_blocks_bundle(
+                parts["bodyTail"].replace(parts["joinchat"], "<!--JOINCHAT-->")),
         }
 
     json.dump(pages, open(os.path.join(OUT, "pages.json"), "w"), indent=1)

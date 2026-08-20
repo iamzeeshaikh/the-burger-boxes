@@ -75,17 +75,28 @@ def parse(html, host):
     }
 
 
-# Differences that are deliberate and documented, not migration defects.
+RELATED = ("WooCommerce picks the four 'Related products' at random from the same "
+           "category, so the set differs between any two renders of the live page. "
+           "The build serves the set captured at migration time.")
+CLOUDFLARE = ("Cloudflare's email-obfuscation shim and its Insights beacon are injected "
+              "by the proxy in front of WordPress and are gone; /assets/cart.js is added.")
+
+
+# Differences that are deliberate, or belong to the live site rather than the
+# migration -- not defects.
 def explain(slug, key, a, b):
     if key == 'scripts':
-        removed = set(a) - set(b)
-        added = set(b) - set(a)
-        if removed <= {'/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js'} \
-           and added <= {'/assets/cart.js'}:
-            return ("Cloudflare's email-obfuscation script is gone (the address is "
-                    "restored in the markup instead) and the cart script is added.")
-    if key == 'text':
-        return None
+        removed = {u for u in set(a) - set(b) if u}
+        added = {u for u in set(b) - set(a) if u}
+        cf = all('cdn-cgi' in u or 'cloudflareinsights' in u for u in removed)
+        if cf and added <= {'/assets/cart.js'}:
+            return CLOUDFLARE
+    if slug.startswith('product__') and key in ('h2', 'links', 'images', 'text'):
+        moved = {x if isinstance(x, str) else x[0] for x in
+                 (set(map(str, a)) ^ set(map(str, b))) if isinstance(a, list)}
+        if key == 'text' or all('/product/' in str(x) or '/uploads/' in str(x) or
+                                not str(x).startswith('/') for x in moved):
+            return RELATED
     return None
 
 
@@ -95,6 +106,7 @@ def main():
         if os.path.exists(os.path.join(astro_dir, '_host.txt')) else ''
     slugs = sorted(os.path.basename(f)[:-5] for f in glob.glob(os.path.join(live_dir, '*.html')))
     report = {}
+    explained_only = []
     missing = []
     counts = collections.Counter()
     for slug in slugs:
@@ -113,11 +125,18 @@ def main():
                 counts[key] += 1
         if diffs:
             report[slug] = diffs
+            if all(v['explained'] for v in diffs.values()):
+                explained_only.append(slug)
     json.dump({'report': report, 'missing': missing},
               open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'compare.json'), 'w'),
               indent=1, default=str)
-    print('pages compared:', len(slugs), ' with differences:', len(report),
-          ' missing on the Astro side:', len(missing))
+    unexplained = [s for s in report if s not in explained_only]
+    print('pages compared:', len(slugs) - len(missing), ' with differences:', len(report),
+          ' fully explained:', len(explained_only),
+          ' UNEXPLAINED:', len(unexplained),
+          ' not captured on the Astro side:', len(missing))
+    if unexplained:
+        print('  unexplained:', unexplained[:10])
     for k, v in counts.most_common():
         print('  %-14s %d pages' % (k, v))
 
