@@ -197,6 +197,10 @@
       "destination": "/api/admin-ajax"
     },
     {
+      "source": "/wp-comments-post.php",
+      "destination": "/api/comments-post"
+    },
+    {
       "source": "/wp-json/joinchat/v1/track-click",
       "destination": "/api/joinchat-track"
     },

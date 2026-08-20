@@ -28,5 +28,5 @@ const [tailBefore, tailAfter = ''] = rewrite(page.bodyTail).split('<!--JOINCHAT-
 <!DOCTYPE html>
 <html lang="en-US"><head><Fragment set:html={rewrite(page.head)} /></head>
 
-<body class={page.bodyClass}><Fragment set:html={rewrite(page.bodyOpen) + OPEN_MAIN + skipLink + SEP_HEADER} /><Header page={page} /><Fragment set:html={SEP_OFFCANVAS} /><Offcanvas page={page} /><Fragment set:html={SEP_CONTENT} /><slot /><Fragment set:html={SEP_FOOTER} /><Footer page={page} /><Fragment set:html={CLOSE_MAIN + tailBefore} /><JoinChat page={page} /><Fragment set:html={tailAfter} /><script src="/assets/cart.js" defer></script></body>
+<body class={page.bodyClass}><Fragment set:html={rewrite(page.bodyOpen) + OPEN_MAIN + skipLink + SEP_HEADER} /><Header page={page} /><Fragment set:html={SEP_OFFCANVAS} /><Offcanvas page={page} /><Fragment set:html={SEP_CONTENT} /><slot /><Fragment set:html={SEP_FOOTER} /><Footer page={page} /><Fragment set:html={CLOSE_MAIN + tailBefore} /><JoinChat page={page} /><Fragment set:html={tailAfter} /><script is:inline src="/assets/cart.js" defer></script></body>
 </html>

@@ -17,8 +17,10 @@
     "nodemailer": "^9.0.5"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.10",
     "pixelmatch": "^7.2.0",
     "playwright": "^1.62.1",
-    "pngjs": "^7.0.0"
+    "pngjs": "^7.0.0",
+    "typescript": "^6.0.3"
   }
 }

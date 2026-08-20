@@ -67,6 +67,8 @@ vercel = {
         # both have to beat the filesystem, so they live in middleware.js.
         # Elementor Pro's form endpoint
         {'source': '/wp-admin/admin-ajax.php', 'destination': '/api/admin-ajax'},
+        # WooCommerce's review form
+        {'source': '/wp-comments-post.php', 'destination': '/api/comments-post'},
         # the WhatsApp widget's click beacon
         {'source': '/wp-json/joinchat/v1/track-click', 'destination': '/api/joinchat-track'},
     ] + [

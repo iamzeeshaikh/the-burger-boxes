@@ -42,22 +42,22 @@ for (const width of WIDTHS) {
     try {
       await page.goto(base + route, { waitUntil: 'load', timeout: 90000 });
       await page.addStyleTag({ content: FREEZE });
-      await page.waitForTimeout(1500);
+      await page.waitForTimeout(900);
       // walk the page so lazy images and background images load
       await page.evaluate(async () => {
-        const step = window.innerHeight;
+        const step = window.innerHeight * 2;
         for (let y = 0; y < document.body.scrollHeight; y += step) {
           window.scrollTo(0, y);
-          await new Promise((r) => setTimeout(r, 120));
+          await new Promise((r) => setTimeout(r, 60));
         }
         window.scrollTo(0, 0);
       });
-      await page.waitForTimeout(2500);
+      await page.waitForTimeout(1400);
       await page.evaluate(() => {
         // the sticky header renders differently mid-scroll; pin it to the top state
         window.scrollTo(0, 0);
       });
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(400);
       const overflow = await page.evaluate(() => ({
         scrollWidth: document.documentElement.scrollWidth,
         clientWidth: document.documentElement.clientWidth,
