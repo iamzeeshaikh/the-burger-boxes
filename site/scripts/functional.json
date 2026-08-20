@@ -1,0 +1,162 @@
+[
+ {
+  "name": "logo links home",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "main menu top-level items",
+  "ok": false,
+  "detail": "6 items"
+ },
+ {
+  "name": "dropdown opens on hover",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "search modal opens",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "search returns results",
+  "ok": true,
+  "detail": "Showing 10 of 56 Results"
+ },
+ {
+  "name": "mobile drawer opens",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "mobile submenu toggles",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "product h1",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "product gallery images",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "gallery is visible after JS",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "product tabs",
+  "ok": true,
+  "detail": "Description | Reviews (0) | Specifications | Faqs"
+ },
+ {
+  "name": "tab switching works",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "specifications tab switching works",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "quote form present",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "quote form names this product",
+  "ok": true,
+  "detail": "Black Burger Boxes Wholesale | The Burger Boxes"
+ },
+ {
+  "name": "reCAPTCHA widget rendered",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "phone link",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "email link",
+  "ok": true,
+  "detail": "mailto:info@theburgerboxes.com"
+ },
+ {
+  "name": "WhatsApp widget",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "live chat widget script",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "add to cart lands on the cart page",
+  "ok": true,
+  "detail": "https://site-dun-ten-91.vercel.app/cart/"
+ },
+ {
+  "name": "cart shows the product",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "cart subtotal",
+  "ok": true,
+  "detail": "$0.20"
+ },
+ {
+  "name": "quantity update recalculates",
+  "ok": true,
+  "detail": "$1.00"
+ },
+ {
+  "name": "proceed to checkout",
+  "ok": true,
+  "detail": "https://site-dun-ten-91.vercel.app/checkout/"
+ },
+ {
+  "name": "checkout shows the order",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "cash on delivery offered",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "checkout validates required fields",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "removing the last item shows the empty cart",
+  "ok": true,
+  "detail": ""
+ },
+ {
+  "name": "status /?add-to-cart=500",
+  "ok": true,
+  "detail": "410"
+ },
+ {
+  "name": "status /nonexistent-page-xyz/",
+  "ok": true,
+  "detail": "404"
+ },
+ {
+  "name": "no JavaScript errors",
+  "ok": true,
+  "detail": ""
+ }
+]

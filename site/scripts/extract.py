@@ -50,9 +50,13 @@ DROP_TAG_PATTERNS = [
     r'<link[^>]*rel=["\']wlwmanifest["\'][^>]*>',
     r'<link[^>]*rel=["\']shortlink["\'][^>]*>',
     r'<link[^>]*rel=["\']pingback["\'][^>]*>',
-    # per-post comment feeds are not reproduced (no comment backend); the site
-    # feed and the site comments feed are, and their links are kept.
-    r'<link[^>]*rel=["\']alternate["\'][^>]*type=["\']application/rss\+xml["\'][^>]*title=["\'][^"\']*Comments Feed["\'](?![^>]*&raquo; Comments Feed)[^>]*>',
+    # the REST API discovery link
+    r'<link[^>]*rel=["\']alternate["\'][^>]*type=["\']application/json["\'][^>]*>',
+    # per-post comment feeds are not reproduced (there is no comment backend).
+    # The site feed and the site comments feed are, and their links are kept:
+    # their titles are exactly "... &raquo; Feed" and "... &raquo; Comments Feed",
+    # while a post's is "... &raquo; <post title> Comments Feed".
+    r'<link[^>]*rel=["\']alternate["\'][^>]*type=["\']application/rss\+xml["\'][^>]*title=["\'][^"\']*&raquo; .+? Comments Feed["\'][^>]*>',
 ]
 
 # Absolute references to assets we now serve ourselves become root-relative so
@@ -76,6 +80,8 @@ def strip_secrets(h):
     h = NONCE_RE.sub('"nonce":""', h)
     h = re.sub(r'"rest_nonce":"[0-9a-f]+"', '"rest_nonce":""', h)
     h = re.sub(r'(<input[^>]*name="(?:_wpnonce|[\w-]*[-_]nonce)"[^>]*value=")[^"]*(")', r'\1\2', h)
+    h = re.sub(r'(createNonceMiddleware\(\s*")[0-9a-f]+(")', r'\1\2', h)
+    h = re.sub(r'("storeApiNonce"\s*:\s*")[0-9a-f]+(")', r'\1\2', h)
     return h
 
 
@@ -169,6 +175,23 @@ def fix_form_attribution(raw, slug):
     return raw
 
 
+CART_BLOCK = os.path.join(OUT, "cart-block.html")
+
+
+def splice_cart_block(h):
+    """The cart page ships a WooCommerce Blocks skeleton that only becomes the
+    real panel once the Blocks bundle hydrates it against the Store API. With no
+    WordPress behind it the skeleton would be all a visitor ever sees, so the
+    hydrated markup captured from the live page is baked in; cart.js then
+    swaps in the filled-cart table when there is something in the cart."""
+    if 'wp-block-woocommerce-cart' not in h or not os.path.exists(CART_BLOCK):
+        return h
+    el = slice_element(h, r'<div data-block-name="woocommerce/cart"', "div")
+    if not el:
+        return h
+    return h.replace(el, open(CART_BLOCK, encoding="utf-8").read())
+
+
 def read_page(f):
     slug = os.path.basename(f)[:-5]
     raw = clean(open(f, encoding="utf-8", errors="replace").read())
@@ -228,7 +251,7 @@ def main():
             "url": SITE + route_for(slug),
             "bodyClass": bodym.group(1) if bodym else "",
             "head": head,
-            "content": parts["content"],
+            "content": splice_cart_block(parts["content"]),
             "joinchatSettings": jc.group(1) if jc else "",
             "chromeDiff": chrome_diff,
             "bodyOpen": parts["bodyOpen"],

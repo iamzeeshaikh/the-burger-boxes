@@ -47,6 +47,13 @@ IGNORE = [
     re.compile(r'^[+-].*assets/cart\.js'),
 ]
 
+# Pages whose content is deliberately different from the raw served HTML.
+SLUG_INTENDED = {
+    'cart': "the WooCommerce Blocks skeleton in the served HTML is replaced with "
+            "the hydrated markup captured from the live rendered DOM, so the page "
+            "matches what a visitor sees rather than what the server sent",
+}
+
 # Deliberate, documented deviations rather than migration defects.
 INTENDED = [
     re.compile(r'^[+-]\s*<input type="hidden" name="referer_title"'),
@@ -57,6 +64,7 @@ def main():
     pages = json.load(open(os.path.join(ROOT, 'src', 'data', 'pages.json')))
     total = 0
     intended_total = [0]
+    slug_intended = {}
     report = {}
     for slug, page in sorted(pages.items()):
         if slug in SKIP_SLUGS:
@@ -69,6 +77,9 @@ def main():
         d = [l for l in difflib.unified_diff(a, b, lineterm='', n=0)
              if l[:1] in '+-' and not l.startswith(('---', '+++'))
              and not any(p.match(l) for p in IGNORE)]
+        if slug in SLUG_INTENDED:
+            slug_intended[slug] = len(d)
+            continue
         intended = [l for l in d if any(p.match(l) for p in INTENDED)]
         d = [l for l in d if l not in intended]
         # the blank lines between the two hidden inputs move with them
@@ -81,6 +92,8 @@ def main():
             total += len(d)
     print('pages with unexplained differences:', len(report), ' total diff lines:', total)
     print('intended form-attribution diff lines:', intended_total[0])
+    for slug, n in slug_intended.items():
+        print('intended page rewrite: %s (%d diff lines) -- %s' % (slug, n, SLUG_INTENDED[slug]))
     for slug, d in list(report.items())[:8]:
         print('=====', slug, len(d))
         for l in d[:12]:

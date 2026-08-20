@@ -15,11 +15,11 @@
   "+<html lang=\"en-US\"><head>",
   "-</body>"
  ],
- "cart": [
+ "category__information": [
   "+<html lang=\"en-US\"><head>",
   "-</body>"
  ],
- "category__information": [
+ "category__uncategorized": [
   "+<html lang=\"en-US\"><head>",
   "-</body>"
  ],
@@ -88,6 +88,10 @@
   "-</body>"
  ],
  "product-category__food-occasion-packaging": [
+  "+<html lang=\"en-US\"><head>",
+  "-</body>"
+ ],
+ "product-category__uncategorized": [
   "+<html lang=\"en-US\"><head>",
   "-</body>"
  ],

@@ -7,6 +7,8 @@ import path from 'node:path';
 const [urlFile, outDir, stripOrigin] = process.argv.slice(2);
 const urls = fs.readFileSync(urlFile, 'utf8').split('\n').map((s) => s.trim()).filter(Boolean);
 fs.mkdirSync(outDir, { recursive: true });
+// the origin these captures came from, so the comparison can normalise hosts
+fs.writeFileSync(path.join(outDir, '_host.txt'), new URL(urls[0]).origin);
 
 const slugFor = (u) => {
   const p = new URL(u).pathname.replace(/^\/|\/$/g, '');

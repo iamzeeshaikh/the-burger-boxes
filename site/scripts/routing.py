@@ -29,6 +29,10 @@ for post_type, current, old in con.execute(
     redirects['%s%s/' % (base, old)] = {'to': '%s%s%s/' % (SITE, base, current), 'status': 301}
 
 redirects['/products/page/1/'] = {'to': SITE + '/products/', 'status': 301}
+# Yoast's own sitemap aliases
+redirects['/sitemap.xml'] = {'to': SITE + '/sitemap_index.xml', 'status': 301}
+redirects['/wp-sitemap.xml'] = {'to': SITE + '/sitemap_index.xml', 'status': 301}
+redirects['/wp-sitemap-posts-post-1.xml'] = {'to': SITE + '/post-sitemap.xml', 'status': 301}
 redirects['/my-account/customer-logout/'] = {'to': SITE + '/my-account/', 'status': 302}
 
 # Product copy links these with the wrong case; WordPress serves the category
@@ -50,23 +54,23 @@ vercel = {
     'trailingSlash': True,
     'redirects': [
         {'source': '/(.*)', 'has': [{'type': 'host', 'value': 'www.theburgerboxes.com'}],
-         'destination': SITE + '/$1', 'permanent': True},
+         'destination': SITE + '/$1', 'statusCode': 301},
     ] + [
-        {'source': src.rstrip('/'), 'destination': cfg['to'], 'permanent': cfg['status'] == 301}
+        # trailingSlash: true normalises the request path before matching, so
+        # every source keeps its trailing slash. statusCode is set explicitly:
+        # `permanent` would emit 308/307 where WordPress emits 301/302.
+        {'source': src, 'destination': cfg['to'], 'statusCode': cfg['status']}
         for src, cfg in sorted(redirects.items())
     ],
     'rewrites': [
-        # WooCommerce add-to-cart URLs answer 410 Gone, as .htaccess does today.
-        {'source': '/:path*', 'has': [{'type': 'query', 'key': 'add-to-cart'}],
-         'destination': '/api/gone'},
-        # WordPress' search results
-        {'source': '/', 'has': [{'type': 'query', 'key': 's'}], 'destination': '/api/search'},
-        {'source': '/page/:n(\\d+)', 'has': [{'type': 'query', 'key': 's'}],
-         'destination': '/api/search'},
+        # The 410-Gone rule for add-to-cart URLs and the /?s= search results
+        # both have to beat the filesystem, so they live in middleware.js.
         # Elementor Pro's form endpoint
         {'source': '/wp-admin/admin-ajax.php', 'destination': '/api/admin-ajax'},
+        # the WhatsApp widget's click beacon
+        {'source': '/wp-json/joinchat/v1/track-click', 'destination': '/api/joinchat-track'},
     ] + [
-        {'source': src.rstrip('/'), 'destination': dest} for src, dest in sorted(rewrites.items())
+        {'source': src, 'destination': dest} for src, dest in sorted(rewrites.items())
     ],
     'headers': [
         {'source': '/(.*)',
