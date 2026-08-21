@@ -3,7 +3,9 @@
 // Checks the response contract (Elementor reads response.data.message /
 // .errors / .redirect_url), required-field validation, the honeypot and the
 // reCAPTCHA gate. Real delivery is proven separately, with SMTP configured.
-const base = process.argv[2] || 'https://site-dun-ten-91.vercel.app';
+import forms from '../src/data/forms.json' with { type: 'json' };
+
+const base = process.argv[2] || 'https://the-burger-boxes.vercel.app';
 const results = [];
 const check = (name, ok, detail = '') => {
   results.push({ name, ok: !!ok, detail });
@@ -92,6 +94,36 @@ const PRODUCT_FORM = {
   });
   check('contact form validates too', r.json && r.json.success === false,
     JSON.stringify(r.json?.data?.errors || {}));
+}
+
+// 7. every form sends the visitor to the thank-you page. The honeypot path
+// answers exactly as a real submission does and needs no reCAPTCHA token, so
+// it proves the redirect without sending mail. Five of the nine live forms have
+// a honeypot; they cover both configurations -- the two "Instant Quote" forms
+// that WordPress already redirected, and forms with no redirect_to of their own,
+// including a Contact Us. The other four differ only in lacking the honeypot,
+// and all nine return through the same success path.
+const LIVE_FORMS = {
+  'b0c910d': 'Instant Quote (home)',
+  'a377aa9': 'Schedule Appointment (home)',
+  '2bb183f5': 'Instant Quote (product)',
+  '7003659': 'Schedule Appointment (product)',
+  '4675000': 'Contact Us (about)',
+  '1b9de9e': 'Contact Us (contact)',
+  '977a832': 'Contact Us (privacy)',
+  'c21af86': 'Contact Us (refund)',
+  'fe0583d': 'Contact Us (terms)',
+};
+for (const [fid, label] of Object.entries(LIVE_FORMS)) {
+  const honeypot = (forms[fid].fields || []).find((f) => f.type === 'honeypot');
+  if (!honeypot) continue;
+  const r = await post({
+    action: 'elementor_pro_forms_send_form', form_id: fid, post_id: '0',
+    [`form_fields[${honeypot.id}]`]: 'bot',
+  });
+  check(`redirects to thank-you: ${label}`,
+    r.json?.success === true && r.json?.data?.redirect_url === '/thank-you/',
+    r.json?.data?.redirect_url ?? JSON.stringify(r.json));
 }
 
 const failed = results.filter((r) => !r.ok);

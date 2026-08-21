@@ -49,6 +49,18 @@ function parseMultipart(req) {
 const fail = (res, message, errors) =>
   res.status(200).json({ success: false, data: errors ? { message, errors } : { message } });
 
+// Every form sends the visitor to the thank-you page. WordPress only did this
+// for the two "Instant Quote" forms; the Schedule Appointment and Contact Us
+// forms just printed a message in place.
+const THANK_YOU = '/thank-you/';
+
+/** Same-site redirects are returned as a path so they also work on staging. */
+function redirectFor(cfg) {
+  const target = (cfg.redirect_to || THANK_YOU)
+    .replace(/^https?:\/\/(www\.)?theburgerboxes\.com/, '');
+  return target || THANK_YOU;
+}
+
 const fieldName = (id) => `form_fields[${id}]`;
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) =>
   ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -81,9 +93,13 @@ export default async function handler(req, res) {
   const honeypots = cfg.fields.filter((f) => f.type === 'honeypot').map((f) => f.id);
   for (const id of honeypots) {
     if (fields[fieldName(id)]) {
+      // answer exactly as a real submission would, so a bot learns nothing
       return res.status(200).json({
         success: true,
-        data: { message: cfg.success_message || 'The form was sent successfully.' },
+        data: {
+          message: cfg.success_message || 'The form was sent successfully.',
+          redirect_url: redirectFor(cfg),
+        },
       });
     }
   }
@@ -190,9 +206,11 @@ export default async function handler(req, res) {
     return fail(res, cfg.server_message || 'Your submission failed because of a server error.');
   }
 
-  const data = { message: cfg.success_message || 'The form was sent successfully.' };
-  if ((cfg.submit_actions || []).includes('redirect') && cfg.redirect_to) {
-    data.redirect_url = cfg.redirect_to;
-  }
-  return res.status(200).json({ success: true, data });
+  return res.status(200).json({
+    success: true,
+    data: {
+      message: cfg.success_message || 'The form was sent successfully.',
+      redirect_url: redirectFor(cfg),
+    },
+  });
 }
