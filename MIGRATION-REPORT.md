@@ -1,7 +1,7 @@
 # theburgerboxes.com — WordPress/WooCommerce → Astro migration report
 
-**Staging:** https://site-dun-ten-91.vercel.app — every `*.vercel.app` host returns `X-Robots-Tag: noindex, nofollow`
-**Repository:** `~/Documents/The Burger Boxes` (site in `site/`)
+**Staging:** https://the-burger-boxes.vercel.app — every `*.vercel.app` host returns `X-Robots-Tag: noindex, nofollow`
+**Repository:** https://github.com/iamzeeshaikh/the-burger-boxes (public, `main`), Vercel builds from it with root directory `site/`
 **Source:** `theburgerboxes-com-20260817-135529-4r47t59actme.wpress` (All-in-One WP Migration, 17 Aug 2026)
 **The production domain has not been connected.** Nothing points at this build.
 
@@ -222,11 +222,13 @@ script, form posting to this site, add to cart → cart page, cart contents, sub
 update, proceed to checkout, order review, Cash on delivery, checkout validation, empty cart after
 removal, 410 and 404 statuses, and zero JavaScript errors.
 
-One real defect was found and fixed here: the cart page was loading WooCommerce's Blocks bundle,
-which hydrates the cart panel with React against the Store API. With no Store API behind it, React
-tore down the markup it found and left an empty container — a race a visitor sometimes lost. The
-bundle and its inline config are gone; the hydrated markup is baked in and `cart.js` owns the
-behaviour.
+Two real defects were found and fixed here, both of them the cart panel going blank. The page was
+loading WooCommerce's Blocks bundle, which hydrates the cart with React against the Store API;
+with no Store API behind it, React tore down the markup it found. And `cart.min.js` replaces the
+cart table with whatever `/?wc-ajax=` returns, so a remove or a quantity update emptied the panel.
+Both are WordPress-runtime scripts that cannot work here; both are dropped, the hydrated markup is
+baked in, and `cart.js` stops propagation on every cart interaction so no WooCommerce delegate can
+reach them.
 
 ### 15. Desktop, tablet and mobile visual results
 
@@ -350,9 +352,10 @@ The build reproduces the live site across every URL, product, category, image, f
 element, responsive layout and interactive function that was audited: 0 missing URLs, 0 metadata
 differences, 0 schema differences, 0 content differences that were not deliberate, 0 missing
 assets, 0 JavaScript errors, and pixel differences that trace entirely to WooCommerce's own
-randomisation. Three defects that would have shipped were caught by the audits and fixed — the
-emoji bundle still loading from WordPress, the missing password-strength library, and the cart
-page's Blocks bundle blanking itself.
+randomisation. Five defects that would have shipped were caught by the audits and fixed — the
+emoji bundle still loading from WordPress, the missing password-strength library, the cart page's
+Blocks bundle blanking itself, a `.gitignore` pattern that silently kept the theme's JavaScript
+out of the repository, and WooCommerce's cart script wiping the cart panel on a remove.
 
 Before connecting `theburgerboxes.com`:
 

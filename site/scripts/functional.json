@@ -151,8 +151,8 @@
  },
  {
   "name": "removing the last item shows the empty cart",
-  "ok": false,
-  "detail": "{\"href\":\"/cart/\",\"hasRoot\":false,\"stored\":\"{}\",\"rows\":0,\"empty\":0}"
+  "ok": true,
+  "detail": "{\"href\":\"/cart/\",\"hasRoot\":true,\"stored\":\"{}\",\"rows\":0,\"empty\":1,\"emptyStyle\":\"\"}"
  },
  {
   "name": "status /?add-to-cart=500",
