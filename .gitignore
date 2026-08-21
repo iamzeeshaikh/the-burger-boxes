@@ -10,3 +10,4 @@ site/.astro/
 .env.*
 .DS_Store
 ._*
+.vercel/

@@ -1,0 +1,6 @@
+# Vercel builds from site/ (Root Directory). Nothing below must ever be
+# uploaded or published: the WordPress backup, the extracted archive, and the
+# migration working directory.
+*.wpress
+_wpress
+_migration
