@@ -420,6 +420,7 @@
       var remove = e.target.closest && e.target.closest('[data-remove]');
       if (remove) {
         e.preventDefault();
+        e.stopImmediatePropagation();
         var cart = read();
         delete cart[remove.dataset.remove];
         write(cart);
@@ -427,6 +428,7 @@
       }
       if (e.target.closest && e.target.closest('[data-update-cart]')) {
         e.preventDefault();
+        e.stopImmediatePropagation();
         var next = read();
         Array.prototype.forEach.call(document.querySelectorAll('[data-qty]'), function (input) {
           var q = parseInt(input.value, 10);

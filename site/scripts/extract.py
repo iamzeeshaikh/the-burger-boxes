@@ -213,7 +213,13 @@ def splice_cart_block(h):
 # the behaviour, so the bundle and the inline config it reads are dropped.
 BLOCKS_SRC = re.compile(
     r'(?s)<script[^>]*src="[^"]*assets/client/(?:blocks|admin)/[^"]*"[^>]*>\s*</script>\s*')
+# WooCommerce's classic cart script replaces the cart table with whatever the
+# /?wc-ajax= endpoint returns. That endpoint is gone, so on a remove or an
+# update it wiped the panel; cart.js owns those interactions instead.
+CART_JS_SRC = re.compile(
+    r'(?s)<script[^>]*src="[^"]*assets/js/frontend/cart\.min\.js[^"]*"[^>]*>\s*</script>\s*')
 BLOCKS_INLINE_IDS = (
+    'wc-cart',
     'wc-settings', 'wc-types', 'wc-blocks', 'blocks-checkout', 'blocks-components',
     'price-format', 'wc-payment-method-', 'cart-frontend', 'checkout-frontend',
     'wc-cart-checkout-', 'wp-api-fetch',
@@ -221,12 +227,17 @@ BLOCKS_INLINE_IDS = (
 BLOCKS_INLINE = re.compile(r'(?s)<script id="([\w-]+?)-js-(?:extra|before|after)"[^>]*>.*?</script>\s*')
 
 
-def drop_blocks_bundle(h):
-    if 'assets/client/blocks' not in h:
-        return h
-    h = BLOCKS_SRC.sub('', h)
-    h = BLOCKS_INLINE.sub(
-        lambda m: '' if m.group(1).startswith(BLOCKS_INLINE_IDS) else m.group(0), h)
+def drop_woocommerce_runtime(h):
+    """Both bundles are checked independently: WordPress prints the Blocks
+    bundle after the page wrapper but enqueues cart.min.js in the head, so a
+    single guard on either marker misses the other."""
+    if 'assets/js/frontend/cart.min.js' in h:
+        h = CART_JS_SRC.sub('', h)
+    if 'assets/client/blocks' in h:
+        h = BLOCKS_SRC.sub('', h)
+    if 'assets/client/blocks' in h or 'wc-cart-js-extra' in h:
+        h = BLOCKS_INLINE.sub(
+            lambda m: '' if m.group(1).startswith(BLOCKS_INLINE_IDS) else m.group(0), h)
     return h
 
 
@@ -288,12 +299,12 @@ def main():
             "route": route_for(slug),
             "url": SITE + route_for(slug),
             "bodyClass": bodym.group(1) if bodym else "",
-            "head": drop_blocks_bundle(head),
+            "head": drop_woocommerce_runtime(head),
             "content": splice_cart_block(parts["content"]),
             "joinchatSettings": jc.group(1) if jc else "",
             "chromeDiff": chrome_diff,
             "bodyOpen": parts["bodyOpen"],
-            "bodyTail": drop_blocks_bundle(
+            "bodyTail": drop_woocommerce_runtime(
                 parts["bodyTail"].replace(parts["joinchat"], "<!--JOINCHAT-->")),
         }
 

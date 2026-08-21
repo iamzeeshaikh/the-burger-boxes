@@ -102,7 +102,7 @@
  {
   "name": "quote form posts to this site",
   "ok": true,
-  "detail": "https://site-dun-ten-91.vercel.app/wp-admin/admin-ajax.php"
+  "detail": "https://the-burger-boxes.vercel.app/wp-admin/admin-ajax.php"
  },
  {
   "name": "form shows the server response inline",
@@ -112,7 +112,7 @@
  {
   "name": "add to cart lands on the cart page",
   "ok": true,
-  "detail": "https://site-dun-ten-91.vercel.app/cart/"
+  "detail": "https://the-burger-boxes.vercel.app/cart/"
  },
  {
   "name": "cart shows the product",
@@ -132,7 +132,7 @@
  {
   "name": "proceed to checkout",
   "ok": true,
-  "detail": "https://site-dun-ten-91.vercel.app/checkout/"
+  "detail": "https://the-burger-boxes.vercel.app/checkout/"
  },
  {
   "name": "checkout shows the order",
@@ -151,8 +151,8 @@
  },
  {
   "name": "removing the last item shows the empty cart",
-  "ok": true,
-  "detail": "{\"href\":\"/cart/\",\"hasRoot\":true,\"stored\":\"{}\",\"rows\":0,\"empty\":1,\"emptyStyle\":null}"
+  "ok": false,
+  "detail": "{\"href\":\"/cart/\",\"hasRoot\":false,\"stored\":\"{}\",\"rows\":0,\"empty\":0}"
  },
  {
   "name": "status /?add-to-cart=500",
