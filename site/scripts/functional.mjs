@@ -170,6 +170,8 @@ await step('removing the last item shows the empty cart', async () => {
     await page.waitForTimeout(500);
   }
   const state = await page.evaluate(() => ({
+    href: location.pathname,
+    hasRoot: !!document.querySelector('.wp-block-woocommerce-cart'),
     stored: localStorage.getItem('tbb_cart'),
     rows: document.querySelectorAll('.woocommerce-cart-form__cart-item').length,
     empty: document.querySelectorAll('.wp-block-woocommerce-empty-cart-block').length,

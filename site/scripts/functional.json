@@ -152,7 +152,7 @@
  {
   "name": "removing the last item shows the empty cart",
   "ok": true,
-  "detail": "{\"stored\":\"{}\",\"rows\":0,\"empty\":1,\"emptyStyle\":null}"
+  "detail": "{\"href\":\"/cart/\",\"hasRoot\":true,\"stored\":\"{}\",\"rows\":0,\"empty\":1,\"emptyStyle\":null}"
  },
  {
   "name": "status /?add-to-cart=500",
