@@ -185,9 +185,10 @@ this deployment, never the WordPress host — and Elementor's script renders the
 inline exactly as before.
 
 **Real delivery is not yet proven.** The SMTP password is encrypted with the site's WordPress
-salts and `wp-config.php` is not in the backup. Everything else was recovered: recipients
-(`shanimazhar82@gmail.com, support@smartwaypackaging.com`), subject ("New message from The Burger
-Boxes"), From identity, the reCAPTCHA secret, and the `/thank-you/` redirect. Give me the Gmail
+salts and `wp-config.php` is not in the backup. Everything else was recovered: the two
+recipients, the subject ("New message from The Burger Boxes"), the From identity, the reCAPTCHA
+secret, and the `/thank-you/` redirect. The addresses are held in the `FORM_TO` /
+`MAIL_FROM_EMAIL` environment variables rather than in the repository, which is public. Give me the Gmail
 app password for `info@theburgerboxes.com` and I will run real end-to-end submissions. No
 test-recipient override is set anywhere.
 
@@ -321,7 +322,8 @@ The live site has no GA4 property and no Google Tag Manager container, so neithe
 
 13. **Every product carries three different ratings at once.** The Elementor widget shows a
     hard-coded **4.7**; the JSON-LD claims `aggregateRating` **5 from 1 review**, authored by
-    `shanimazhar82@gmail.com`, whose review text is the page's own meta description; the visible
+    the site owner's own admin email address, whose review text is the page's own meta
+    description; the visible
     tab says **"Reviews (0)"**. All 69 products, identical pattern. Fabricated review schema of
     exactly this shape is what got zeecustomboxes.com suspended from Merchant Center.
 14. Header and footer show `(503) 358-0443` but link to `tel:+1-929-2141-874`.

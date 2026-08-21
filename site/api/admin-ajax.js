@@ -163,15 +163,21 @@ export default async function handler(req, res) {
     auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
   });
 
-  const recipients = (process.env.FORM_TO_OVERRIDE || cfg.email_to || '')
+  // Recipients live in the environment, not in src/data -- the repository is
+  // public and these addresses are not published anywhere on the site.
+  const recipients = (process.env.FORM_TO_OVERRIDE || process.env.FORM_TO || '')
     .split(',').map((s) => s.trim()).filter(Boolean);
+  if (!recipients.length) {
+    console.error('FORM_TO is not configured; refusing to drop the submission');
+    return fail(res, cfg.server_message || 'Your submission failed because of a server error.');
+  }
   const replyTo = emailField ? fields[fieldName(emailField.id)] || undefined : undefined;
   // the subject WordPress was configured with, unchanged
   const subject = cfg.email_subject || `New message from "${cfg.form_name}"`;
 
   try {
     await transport.sendMail({
-      from: `"${cfg.email_from_name || 'The Burger Boxes'}" <${cfg.email_from || process.env.SMTP_USER}>`,
+      from: `"${process.env.MAIL_FROM_NAME || 'The Burger Boxes'}" <${process.env.MAIL_FROM_EMAIL || process.env.SMTP_USER}>`,
       to: recipients,
       replyTo,
       subject,
