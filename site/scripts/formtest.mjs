@@ -121,9 +121,10 @@ for (const [fid, label] of Object.entries(LIVE_FORMS)) {
     action: 'elementor_pro_forms_send_form', form_id: fid, post_id: '0',
     [`form_fields[${honeypot.id}]`]: 'bot',
   });
+  // Elementor reads the redirect from the nested data object
   check(`redirects to thank-you: ${label}`,
-    r.json?.success === true && r.json?.data?.redirect_url === '/thank-you/',
-    r.json?.data?.redirect_url ?? JSON.stringify(r.json));
+    r.json?.success === true && r.json?.data?.data?.redirect_url === '/thank-you/',
+    r.json?.data?.data?.redirect_url ?? JSON.stringify(r.json));
 }
 
 const failed = results.filter((r) => !r.ok);

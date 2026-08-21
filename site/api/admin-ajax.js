@@ -61,6 +61,22 @@ function redirectFor(cfg) {
   return target || THANK_YOU;
 }
 
+/**
+ * Elementor Pro's success payload is nested. form-sender triggers its handlers
+ * with `response.data`, and those handlers then read `response.data.*` again --
+ * form-redirect looks for `data.data.redirect_url`, and the popup handler
+ * dereferences `data.data.popup` unconditionally. A flat payload makes that
+ * handler throw, which aborts the rest of onSuccess: no redirect, and not even
+ * the success message.
+ */
+const success = (cfg) => ({
+  success: true,
+  data: {
+    message: cfg.success_message || 'The form was sent successfully.',
+    data: { redirect_url: redirectFor(cfg) },
+  },
+});
+
 const fieldName = (id) => `form_fields[${id}]`;
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) =>
   ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -94,13 +110,7 @@ export default async function handler(req, res) {
   for (const id of honeypots) {
     if (fields[fieldName(id)]) {
       // answer exactly as a real submission would, so a bot learns nothing
-      return res.status(200).json({
-        success: true,
-        data: {
-          message: cfg.success_message || 'The form was sent successfully.',
-          redirect_url: redirectFor(cfg),
-        },
-      });
+      return res.status(200).json(success(cfg));
     }
   }
 
@@ -218,11 +228,5 @@ export default async function handler(req, res) {
     return fail(res, cfg.server_message || 'Your submission failed because of a server error.');
   }
 
-  return res.status(200).json({
-    success: true,
-    data: {
-      message: cfg.success_message || 'The form was sent successfully.',
-      redirect_url: redirectFor(cfg),
-    },
-  });
+  return res.status(200).json(success(cfg));
 }
