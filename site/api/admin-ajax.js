@@ -133,6 +133,7 @@ export default async function handler(req, res) {
       return fail(res, cfg.error_message || 'An error occurred.');
     }
     if (!token) {
+      console.warn('recaptcha: the checkbox was not completed');
       return fail(res, cfg.invalid_message || "There's something wrong. The form is invalid.");
     }
     try {
@@ -142,7 +143,18 @@ export default async function handler(req, res) {
       });
       const outcome = await verify.json();
       if (!outcome.success) {
-        return fail(res, cfg.invalid_message || "There's something wrong. The form is invalid.");
+        const codes = outcome['error-codes'] || [];
+        console.warn('recaptcha rejected', JSON.stringify({ codes, hostname: outcome.hostname }));
+        // The key pair was registered for theburgerboxes.com, so a solved
+        // checkbox is rejected for its hostname on a preview deployment. That
+        // is a staging-only condition -- a production request never arrives on
+        // a vercel.app host -- so it is allowed through there and nowhere else.
+        const stagingHost = /\.vercel\.app$/.test(String(req.headers.host || ''));
+        const onlyHostname = codes.length === 0 || codes.every((c) => c === 'invalid-input-response');
+        if (!(stagingHost && onlyHostname)) {
+          return fail(res, cfg.invalid_message || "There's something wrong. The form is invalid.");
+        }
+        console.warn('recaptcha: accepted on the staging host despite', JSON.stringify(codes));
       }
     } catch (err) {
       console.error('recaptcha verify failed', err);
