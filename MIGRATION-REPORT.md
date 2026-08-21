@@ -106,7 +106,10 @@ slugs WordPress 301s are reproduced as 301s.
 
 **49/49 match the live server** — status code and `Location` — across all 35 redirects, 6 rewrites
 and the special statuses (410 on add-to-cart, 404 on `/shop/` and `/product-tag/…`, 200 on
-robots.txt and the sitemaps). Note that the live host answers a non-browser request with a 202
+robots.txt and the sitemaps). One instructed change: the sitemap index is served at
+`/sitemap.xml` rather than Yoast's `/sitemap_index.xml`, robots.txt points at it, and the old
+URL 301s to it so the copy Search Console has on file does not 404. The six child sitemaps keep
+their names. Note that the live host answers a non-browser request with a 202
 bot-challenge interstitial; probes send browser headers, and with them the live site returns 410
 exactly as this build does.
 

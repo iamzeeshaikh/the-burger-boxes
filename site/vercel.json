@@ -176,8 +176,8 @@
       "statusCode": 301
     },
     {
-      "source": "/sitemap.xml",
-      "destination": "https://theburgerboxes.com/sitemap_index.xml",
+      "source": "/sitemap_index.xml",
+      "destination": "https://theburgerboxes.com/sitemap.xml",
       "statusCode": 301
     },
     {
@@ -187,7 +187,7 @@
     },
     {
       "source": "/wp-sitemap.xml",
-      "destination": "https://theburgerboxes.com/sitemap_index.xml",
+      "destination": "https://theburgerboxes.com/sitemap.xml",
       "statusCode": 301
     }
   ],

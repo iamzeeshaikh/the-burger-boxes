@@ -15,7 +15,7 @@ const paths = [
   '/shop/',
   '/product-tag/burger/',
   '/robots.txt',
-  '/sitemap_index.xml',
+  '/sitemap.xml',
   '/product-sitemap.xml',
 ];
 

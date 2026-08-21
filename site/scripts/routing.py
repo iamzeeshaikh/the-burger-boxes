@@ -29,9 +29,11 @@ for post_type, current, old in con.execute(
     redirects['%s%s/' % (base, old)] = {'to': '%s%s%s/' % (SITE, base, current), 'status': 301}
 
 redirects['/products/page/1/'] = {'to': SITE + '/products/', 'status': 301}
-# Yoast's own sitemap aliases
-redirects['/sitemap.xml'] = {'to': SITE + '/sitemap_index.xml', 'status': 301}
-redirects['/wp-sitemap.xml'] = {'to': SITE + '/sitemap_index.xml', 'status': 301}
+# The sitemap index is served at /sitemap.xml. Yoast published it as
+# /sitemap_index.xml, which Search Console still has on file, so that URL and
+# WordPress' own aliases redirect to it rather than 404.
+redirects['/sitemap_index.xml'] = {'to': SITE + '/sitemap.xml', 'status': 301}
+redirects['/wp-sitemap.xml'] = {'to': SITE + '/sitemap.xml', 'status': 301}
 redirects['/wp-sitemap-posts-post-1.xml'] = {'to': SITE + '/post-sitemap.xml', 'status': 301}
 redirects['/my-account/customer-logout/'] = {'to': SITE + '/my-account/', 'status': 302}
 

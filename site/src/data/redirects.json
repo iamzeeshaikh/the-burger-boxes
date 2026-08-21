@@ -123,12 +123,12 @@
   "to": "https://theburgerboxes.com/products/",
   "status": 301
  },
- "/sitemap.xml": {
-  "to": "https://theburgerboxes.com/sitemap_index.xml",
+ "/sitemap_index.xml": {
+  "to": "https://theburgerboxes.com/sitemap.xml",
   "status": 301
  },
  "/wp-sitemap.xml": {
-  "to": "https://theburgerboxes.com/sitemap_index.xml",
+  "to": "https://theburgerboxes.com/sitemap.xml",
   "status": 301
  },
  "/wp-sitemap-posts-post-1.xml": {
