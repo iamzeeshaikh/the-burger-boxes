@@ -32,3 +32,18 @@ print('assets referenced:', len(refs))
 print('missing from public/:', len(missing))
 for m in missing:
     print('  ', m, '(%d references)' % refs[m])
+
+# Vercel builds from the repository, so an asset that exists on disk but is not
+# committed is missing as far as the deployment is concerned. A bare `dist/`
+# ignore pattern silently swallowed the theme's JS this way once already.
+import subprocess
+tracked = set(subprocess.run(['git', 'ls-files', '-z', 'public'], cwd=ROOT,
+                             capture_output=True, text=True).stdout.split('\0'))
+untracked = sorted(a for a in refs
+                   if os.path.isfile(os.path.join(PUB, a.lstrip('/')))
+                   and 'public/' + a.lstrip('/') not in tracked)
+print('present on disk but not committed:', len(untracked))
+for m in untracked[:20]:
+    print('  ', m, '(%d references)' % refs[m])
+if len(untracked) > 20:
+    print('   ... and %d more' % (len(untracked) - 20))

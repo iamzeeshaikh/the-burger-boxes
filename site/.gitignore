@@ -1,7 +1,10 @@
-node_modules/
-dist/
-.vercel/
-.astro/
+# Anchored to this directory on purpose: a bare `dist/` also matches
+# public/wp-content/themes/rishi/dist/ and public/wp-includes/js/dist/, which
+# are site assets, not build output.
+/node_modules/
+/dist/
+/.vercel/
+/.astro/
 .env
 .env.*
-.vercel
+!.env.example
