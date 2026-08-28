@@ -12,6 +12,7 @@ import { applySeo } from '../lib/seo.js';
 import { RECAPTCHA_SRC } from '../lib/protect.js';
 import { applySchemaPrice } from '../lib/price.js';
 import { CART_JS_URL, CATALOGUE_URL } from '../lib/assets.js';
+import { schemaFor, stripPasteResidue } from '../lib/schema.js';
 import { skipLink } from '../lib/chrome.js';
 import Header from '../components/Header.astro';
 import Offcanvas from '../components/Offcanvas.astro';
@@ -22,7 +23,11 @@ const { page, needsRecaptcha = false } = Astro.props;
 
 // Elementor only enqueued reCAPTCHA's script on pages whose forms it had
 // configured with one; the forms we guard after the fact need it too.
+// Breadcrumbs and the FAQ tab, described for machines -- see src/lib/schema.js.
+const extraSchema = schemaFor(page);
+
 const head = rewrite(applySchemaPrice(applySeo(page.head, page.route))) +
+  (extraSchema ? '\n' + extraSchema + '\n' : '') +
   (needsRecaptcha && !page.head.includes('recaptcha/api.js')
     ? `\n<script src="${RECAPTCHA_SRC}" async defer></script>\n`
     : '');
@@ -34,7 +39,7 @@ const SEP_FOOTER = '\n\t\t\t\t\t\t';
 const CLOSE_MAIN = '\n\t\t\t\t</div><!-- #page -->';
 // The WhatsApp widget sits between the late stylesheets and the vendor scripts
 // WordPress prints after the page wrapper, so bodyTail is split around it.
-const [tailBefore, tailAfter = ''] = rewrite(page.bodyTail).split('<!--JOINCHAT-->');
+const [tailBefore, tailAfter = ''] = stripPasteResidue(rewrite(page.bodyTail)).split('<!--JOINCHAT-->');
 ---
 <!DOCTYPE html>
 <html lang="en-US"><head><Fragment set:html={head} /></head>
