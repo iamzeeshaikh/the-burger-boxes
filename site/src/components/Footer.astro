@@ -1,5 +1,38 @@
 ---
+// The captured footer, plus links to the two pages we added after the
+// migration. Without them those pages are orphans -- nothing on the site points
+// at a page that only exists in the sitemap, and a page nothing links to does
+// not accumulate any of the site's own authority.
+//
+// Injected into the *rendered* footer rather than chrome.json, because
+// `chromeDiff` addresses that shared markup by token index and inserting a tag
+// into it would shift every one of those indexes.
 import { region } from '../lib/chrome.js';
+
 const { page } = Astro.props;
+
+const ADDED = [
+  ['/burger-box-packaging/', 'Burger Box Packaging'],
+  ['/wholesale-burger-boxes/', 'Wholesale Burger Boxes'],
+];
+
+// The new links follow the last item of the "Box Categories" list. Matched by
+// id rather than by its full markup: chromeDiff rewrites that item's class list
+// on the pages where it is the current menu item, and an exact-string match
+// silently skipped all fourteen of them.
+const LAST = /<li id="menu-item-716"[\s\S]*?<\/li>/;
+
+const extra = ADDED.map(([href, label], i) =>
+  `\n<li id="menu-item-tbb-${i + 1}" class="menu-item menu-item-type-post_type ` +
+  `menu-item-object-page menu-item-tbb-${i + 1}">` +
+  `<a href="https://theburgerboxes.com${href}">${label}</a></li>`).join('');
+
+const original = region('footer', page);
+const footer = original.replace(LAST, (m) => m + extra);
+// An orphan page is the failure this exists to prevent, so a footer that did
+// not take the links fails the build rather than shipping quietly.
+if (footer === original) {
+  throw new Error(`Footer links not injected on ${page.route}: the anchor menu item was not found.`);
+}
 ---
-<Fragment set:html={region('footer', page)} />
+<Fragment set:html={footer} />

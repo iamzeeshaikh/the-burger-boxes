@@ -1,0 +1,113 @@
+---
+// "wholesale burger boxes" drew 1,365 impressions and zero clicks at position
+// 13 with nothing on the site addressing it. It is a different question from
+// the product pages -- it is about ordering in bulk, not about a box -- so it
+// gets its own page rather than another product variant.
+import Shell from '../layouts/Shell.astro';
+import PageBody from '../components/PageBody.astro';
+import { authoredPage } from '../lib/authored.js';
+
+const page = authoredPage({
+  route: '/wholesale-burger-boxes/',
+  title: 'Wholesale Burger Boxes | The Burger Boxes',
+  description: 'Buy burger boxes wholesale: from $0.20 a unit, minimum order 100, free design and free shipping. Custom sizes, materials and printing on every run.',
+});
+---
+<Shell page={page}>
+  <PageBody postId={9002} title="Wholesale Burger Boxes" crumb="Wholesale Burger Boxes" route="/wholesale-burger-boxes/">
+    <p>
+      We supply burger boxes wholesale to restaurants, cafes, food trucks,
+      takeaways, ghost kitchens and caterers across the country. Every run is
+      printed to order rather than picked from stock, which means the size, the
+      board, the print and the finish are yours to set rather than ours to
+      offer. Prices start at $0.20 a unit, the minimum order is 100 units, and
+      design and shipping are included in the quote.
+    </p>
+
+    <h2>What wholesale means here</h2>
+    <p>
+      There is no standing catalog of pre-made boxes waiting in a warehouse.
+      You tell us the dimensions, the style and the quantity, and we print that
+      run for you. That is why the figure on each product page is a starting
+      point rather than a fixed price — the unit cost falls as the run gets
+      longer, and the only honest way to a firm number is to quote against a
+      real specification.
+    </p>
+    <p>
+      It also means the minimum exists for a reason. Setting up a print run
+      costs the same whether it produces a hundred boxes or a hundred thousand,
+      so very short runs cost more per box than they are worth to either of us.
+      One hundred units is where that stops being true.
+    </p>
+
+    <h2>What we need to price a run</h2>
+    <p>
+      Three things get you an accurate quote. First, the internal dimensions the
+      box has to hold — measure your tallest regular build with the bun on, and
+      give us length, width and height rather than a description. Second, the
+      style and board. Third, the quantity, or a range if you are still
+      deciding.
+    </p>
+    <p>
+      Artwork is useful but not required to start. Our designers set the files
+      up for you at no charge, so a logo and a rough idea of the look are enough
+      for a first quote, and the artwork can be finalized before the run goes to
+      press. If you are unsure of the size, describe the build and we will
+      suggest one from the
+      <a href="/product-category/boxes-by-size/">standard burger box sizes</a>.
+    </p>
+
+    <h2>Choosing the specification</h2>
+    <p>
+      Board and style are the two decisions that move the price most, and they
+      are also the two that decide whether the food survives the journey. Kraft,
+      cardboard, corrugated, paper and bagasse each behave differently with heat
+      and grease, and the trade-offs are set out under
+      <a href="/product-category/boxes-by-material/">burger boxes by material</a>.
+    </p>
+    <p>
+      Style decides how the box opens, how it stacks and how well it holds a
+      tall build — a clamshell for counter service, a deeper parcel box for
+      delivery, a window box where the product needs to show. The range is
+      grouped under <a href="/product-category/boxes-by-type/">burger box types</a>.
+    </p>
+    <p>
+      For the wider background on how a specification comes together, and what
+      each choice actually changes, see our guide to
+      <a href="/burger-box-packaging/">specifying burger box packaging</a>.
+    </p>
+
+    <h2>Printing and branding</h2>
+    <p>
+      Full-color printing is available on every line, with gloss, matte and spot
+      UV finishes, and free design work to prepare the files. For a first order,
+      plain colored stock in black, brown, kraft, pink, red or white is often
+      the fastest route to something that looks deliberate, with printed
+      artwork added on the reorder once the design has settled.
+    </p>
+    <p>
+      Logo boxes, printed sleeves, branded meal boxes and stickers are grouped
+      under <a href="/product-category/boxes-by-customization/">custom printed burger packaging</a>.
+      Ordering fries boxes, cups, sauce pots and delivery bags on the same run
+      keeps the artwork consistent across the whole order and usually costs less
+      than sourcing them separately.
+    </p>
+
+    <h2>Reordering</h2>
+    <p>
+      Once a run has been printed we hold the specification and the artwork, so
+      a repeat order is a quantity and a date rather than a fresh brief. That is
+      also the point at which longer runs make sense: if the design has proven
+      itself over a first order, extending the quantity is the cheapest change
+      you can make to your unit price.
+    </p>
+
+    <h2>Start a wholesale order</h2>
+    <p>
+      Send the size, the style and the quantity and we will come back with
+      wholesale pricing and a production timeline. Use the
+      <a href="/contact-us/">wholesale quote form</a>, or call (503) 358-0443 and
+      talk it through.
+    </p>
+  </PageBody>
+</Shell>

@@ -1,0 +1,141 @@
+---
+// A hub for "burger box packaging" (2,029 impressions) and "burger packaging
+// box" (1,536), two queries the site ranked at position ~12 for with no page
+// of its own -- the homepage was competing for them alongside everything else.
+// One page rather than two: the queries are the same question asked twice, and
+// a second near-identical page would be a doorway.
+import Shell from '../layouts/Shell.astro';
+import PageBody from '../components/PageBody.astro';
+import { authoredPage } from '../lib/authored.js';
+
+const page = authoredPage({
+  route: '/burger-box-packaging/',
+  title: 'Burger Box Packaging: Types, Materials & Sizes | The Burger Boxes',
+  description: 'How burger box packaging is specified: box styles, board materials, sizes, finishes and print. Wholesale prices from $0.20 a unit, minimum order 100.',
+});
+---
+<Shell page={page}>
+  <PageBody postId={9001} title="Burger Box Packaging" crumb="Burger Box Packaging" route="/burger-box-packaging/">
+    <p>
+      Burger box packaging comes down to four decisions: the style of box, the
+      board it is made from, the size it has to hold, and how it is printed.
+      Get those right and the burger arrives intact and looking like it came
+      from your kitchen. Get them wrong and the bun flattens, grease shows
+      through, or the box costs more than it needed to. This page walks through
+      each decision and links to the range that covers it.
+    </p>
+    <p>
+      Every line here is printed to order rather than pulled from stock, so
+      nothing on this page is a fixed product — it is a starting point you
+      adjust. Prices start at $0.20 a unit, the minimum order is 100, and design
+      and shipping are included.
+    </p>
+
+    <h2>Box styles</h2>
+    <p>
+      The style decides how the box opens, how it stacks behind a counter, and
+      how well it holds a tall build. A clamshell hinges at the back and is the
+      default for a single burger: one motion to open, one to close, and nothing
+      to assemble during a rush. Parcel and takeaway boxes are squarer and
+      deeper, which suits delivery runs where boxes are stacked in a bag.
+    </p>
+    <p>
+      Window boxes put a die-cut panel in the lid so the product shows without
+      the box being opened, which matters for display counters and for delivery
+      photography. Foldable boxes ship flat and are assembled on site, trading a
+      few seconds of labor for a large saving on storage and freight — useful if
+      you are ordering in volume but short on back-of-house space.
+    </p>
+    <p>
+      Not everything is a box. Trays hold open builds and loaded fries, liners
+      sit inside a box to take the grease, inserts stop the burger sliding in
+      transit, and wraps and sleeves handle the burger directly. The full range
+      of styles is grouped under <a href="/product-category/boxes-by-type/">burger box styles by type</a>.
+    </p>
+
+    <h2>Board and materials</h2>
+    <p>
+      Material governs grease resistance, how much heat the box holds, and what
+      the packaging says about you before it is opened. Cardboard is the general
+      purpose choice and takes print well. Corrugated board adds a fluted layer,
+      which stiffens the box and insulates it — worth it for heavier builds and
+      longer delivery times.
+    </p>
+    <p>
+      Kraft is unbleached and arrives brown, which reads as plain and
+      unprocessed and is why so many independents use it. Paper board is lighter
+      and cheaper and suits smaller items where structure matters less. Bagasse
+      is pressed from sugarcane fiber left over from sugar milling; it is sturdy,
+      resists grease without a plastic lining, and composts.
+    </p>
+    <p>
+      Recycled kraft and biodegradable stock are available where the
+      environmental claim is part of the brand rather than an afterthought. The
+      whole comparison, with the recycled and compostable options alongside the
+      conventional ones, sits under <a href="/product-category/boxes-by-material/">burger boxes by material</a>.
+    </p>
+
+    <h2>Sizes</h2>
+    <p>
+      Sizing is the decision people most often get wrong. A box with too much
+      headroom lets the burger slide and arrive leaning; too little and the lid
+      presses the bun flat and pushes the fillings out the side. The box should
+      hold the build with a few millimeters to spare and no more.
+    </p>
+    <p>
+      Standard runs cover sliders, single burgers, tall stacked builds, doubles
+      and large formats, and any of them can be cut to your own internal
+      dimensions instead. If you are unsure, measure your tallest regular build
+      with the lid of the bun on and send that figure with the quote — pick a
+      starting point from <a href="/product-category/boxes-by-size/">burger boxes by size</a>.
+    </p>
+
+    <h2>Print and finish</h2>
+    <p>
+      Printing is where packaging does brand work rather than just carrying
+      food. Full-color print is available across the range, and the coating
+      changes the feel as much as the look: gloss lifts color and wipes clean,
+      matte is flatter and more restrained, and spot UV puts a gloss layer over
+      selected artwork so a logo catches the light against a matte background.
+    </p>
+    <p>
+      Color-led options — black, brown, pink, red and white stock — are grouped
+      under <a href="/product-category/boxes-by-color/">burger boxes by color</a>,
+      and are often the quickest way to look deliberate without a full print run.
+    </p>
+    <p>
+      Logo work, printed sleeves, branded meal boxes and stickers are collected
+      under <a href="/product-category/boxes-by-customization/">custom printed burger packaging</a>,
+      and can be applied to any box style on this page. Our designers prepare the
+      artwork at no charge, so a logo and a rough idea are enough to start.
+    </p>
+
+    <h2>Packaging around the burger</h2>
+    <p>
+      Most orders do not stop at the box. Fries boxes, nugget and fried chicken
+      boxes, sandwich and snack boxes, sauce pots with lids, cups for cold
+      drinks and coffee, salad bowls, paper straws and delivery bags are printed
+      on the same run and in the same artwork.
+    </p>
+    <p>
+      Ordering them together is usually cheaper than ordering them separately
+      and it keeps the whole handover looking like one brand rather than a
+      collection of suppliers — the range is listed under
+      <a href="/product-category/complementary-food-packaging/">food packaging for burger shops</a>.
+    </p>
+
+    <h2>Getting a price</h2>
+    <p>
+      Unit price falls as quantity rises, so a firm number needs three things:
+      the internal size, the style and board, and the run length. Artwork can
+      follow. Send those and we come back with wholesale pricing and a
+      production timeline — start on the
+      <a href="/contact-us/">burger packaging quote form</a>.
+    </p>
+    <p>
+      If you would rather see the range first,
+      <a href="/products/">every burger box and packaging line</a> is listed in one
+      place. To talk a specification through instead, call (503) 358-0443.
+    </p>
+  </PageBody>
+</Shell>
