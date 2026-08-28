@@ -1,0 +1,68 @@
+---
+// Guides.
+//
+// The site had two articles. Product pages answer "what is this box"; these
+// answer the questions a buyer asks before they know which box they want,
+// which is the layer the site was missing and part of why its head terms sit
+// on page two with nothing supporting them.
+//
+// They live at the root the way the two captured posts do, are written in
+// Markdown under src/data/blog, and borrow their head and chrome from a
+// captured record like every other page we author.
+import Shell from '../layouts/Shell.astro';
+import PageBody from '../components/PageBody.astro';
+import { authoredPage } from '../lib/authored.js';
+import { PROD_ORIGIN } from '../lib/site.js';
+import GuideList from '../components/GuideList.astro';
+
+const posts = import.meta.glob('../data/blog/*.md', { eager: true });
+
+export function getStaticPaths() {
+  const all = import.meta.glob('../data/blog/*.md', { eager: true });
+  return Object.keys(all).map((file) => ({
+    params: { post: file.split('/').pop().replace(/\.md$/, '') },
+    props: { file },
+  }));
+}
+
+const { file } = Astro.props;
+const mod = posts[file];
+const { title, description, published, updated } = mod.frontmatter;
+const slug = file.split('/').pop().replace(/\.md$/, '');
+const route = `/${slug}/`;
+const url = PROD_ORIGIN + route;
+
+const page = authoredPage({ route, title: `${title} - The Burger Boxes`, description });
+const { Content } = mod;
+
+const schema = [{
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  '@id': url + '#article',
+  headline: title,
+  description,
+  datePublished: published,
+  dateModified: updated || published,
+  mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+  publisher: { '@type': 'Organization', name: 'The Burger Boxes', url: PROD_ORIGIN + '/' },
+}, {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: PROD_ORIGIN + '/' },
+    { '@type': 'ListItem', position: 2, name: title, item: url },
+  ],
+}];
+---
+<Shell page={page} schema={schema}>
+  <PageBody postId={9100} title={title} crumb={title} route={route}>
+    <Content />
+    <hr />
+    <p>
+      Need a price for a run? Send the size, style and quantity and we will come
+      back with wholesale pricing and a production timeline — start on the
+      <a href="/contact-us/">burger packaging quote form</a>.
+    </p>
+    <GuideList heading="More guides" exclude={slug} />
+  </PageBody>
+</Shell>

@@ -3,6 +3,7 @@ import pages from '../data/pages.json';
 import { rewrite } from '../lib/site.js';
 import Shell from '../layouts/Shell.astro';
 import QuoteSection from '../components/QuoteSection.astro';
+import GuideList from '../components/GuideList.astro';
 import { protectForms } from '../lib/protect.js';
 import { applyPricing } from '../lib/price.js';
 import { stripPasteResidue } from '../lib/schema.js';
@@ -27,6 +28,10 @@ const { page } = Astro.props;
 const showQuote = page.route.startsWith('/product-category/') &&
   page.route !== '/product-category/uncategorized/';
 
+// The captured archive lists the two posts WordPress had; the guides we added
+// belong on it too, or the only route to them is the sitemap.
+const showGuides = page.route === '/category/information/';
+
 // The unguarded "Contact Us" copies on /about-us/ and the policy pages get the
 // same honeypot + reCAPTCHA every other form on the site already has.
 const { html: guarded, needsScript } = protectForms(rewrite(page.content));
@@ -35,5 +40,6 @@ const content = stripPasteResidue(applyPricing(guarded, page.route));
 ---
 <Shell page={page} needsRecaptcha={needsScript || showQuote}>
   <Fragment set:html={content} />
+  {showGuides && <div class="rishi-container"><GuideList heading="Guides" intro="Longer answers to the questions that come up before a specification is settled." /></div>}
   {showQuote && <QuoteSection page={page} />}
 </Shell>

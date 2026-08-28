@@ -6,14 +6,25 @@
 import Shell from '../layouts/Shell.astro';
 import PageBody from '../components/PageBody.astro';
 import { authoredPage } from '../lib/authored.js';
+import GuideList from '../components/GuideList.astro';
+import { PROD_ORIGIN } from '../lib/site.js';
 
 const page = authoredPage({
   route: '/wholesale-burger-boxes/',
   title: 'Wholesale Burger Boxes | The Burger Boxes',
   description: 'Buy burger boxes wholesale: from $0.20 a unit, minimum order 100, free design and free shipping. Custom sizes, materials and printing on every run.',
 });
+
+const schema = [{
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: PROD_ORIGIN + '/' },
+    { '@type': 'ListItem', position: 2, name: 'Wholesale Burger Boxes', item: PROD_ORIGIN + '/wholesale-burger-boxes/' },
+  ],
+}];
 ---
-<Shell page={page}>
+<Shell page={page} schema={schema}>
   <PageBody postId={9002} title="Wholesale Burger Boxes" crumb="Wholesale Burger Boxes" route="/wholesale-burger-boxes/">
     <p>
       We supply burger boxes wholesale to restaurants, cafes, food trucks,
@@ -109,5 +120,6 @@ const page = authoredPage({
       <a href="/contact-us/">wholesale quote form</a>, or call (503) 358-0443 and
       talk it through.
     </p>
+    <GuideList heading="Guides" intro="Longer answers to the questions that come up before a specification is settled." />
   </PageBody>
 </Shell>

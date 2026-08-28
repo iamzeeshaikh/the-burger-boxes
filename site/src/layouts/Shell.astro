@@ -19,12 +19,17 @@ import Offcanvas from '../components/Offcanvas.astro';
 import Footer from '../components/Footer.astro';
 import JoinChat from '../components/JoinChat.astro';
 
-const { page, needsRecaptcha = false } = Astro.props;
+const { page, needsRecaptcha = false, schema = [] } = Astro.props;
 
 // Elementor only enqueued reCAPTCHA's script on pages whose forms it had
 // configured with one; the forms we guard after the fact need it too.
 // Breadcrumbs and the FAQ tab, described for machines -- see src/lib/schema.js.
-const extraSchema = schemaFor(page);
+// A route may add blocks of its own; articles describe themselves that way.
+const extraSchema = [
+  schemaFor(page),
+  ...schema.map((b) => '<script type="application/ld+json">' +
+    JSON.stringify(b).replace(/<\/script/gi, '<\\/script') + '</script>'),
+].filter(Boolean).join('\n');
 
 const head = rewrite(applySchemaPrice(applySeo(page.head, page.route))) +
   (extraSchema ? '\n' + extraSchema + '\n' : '') +

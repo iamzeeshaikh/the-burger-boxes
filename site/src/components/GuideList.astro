@@ -1,0 +1,33 @@
+---
+import { guides } from '../lib/guides.js';
+const { heading = 'Guides', intro, exclude } = Astro.props;
+const items = guides.filter((g) => g.slug !== exclude);
+---
+<section class="tbb-guides" aria-labelledby="tbb-guides-heading">
+  <h2 id="tbb-guides-heading">{heading}</h2>
+  {intro && <p class="tbb-guides-intro">{intro}</p>}
+  <ul class="tbb-guides-list">
+    {items.map((g) => (
+      <li>
+        <a href={`/${g.slug}/`}>{g.title}</a>
+        <span>{g.description}</span>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style is:global>
+  .tbb-guides { margin: 40px 0 8px; }
+  .tbb-guides h2 { margin: 0 0 10px; }
+  .tbb-guides-intro { margin: 0 0 18px; }
+  .tbb-guides-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+  .tbb-guides-list li {
+    padding: 14px 16px;
+    background: #f6f7f9;
+    border: 1px solid #e4e7ec;
+    border-radius: 8px;
+  }
+  .tbb-guides-list a { font-weight: 600; text-decoration: none; }
+  .tbb-guides-list a:hover, .tbb-guides-list a:focus-visible { text-decoration: underline; }
+  .tbb-guides-list span { display: block; margin-top: 4px; font-size: 15px; line-height: 1.55; color: #4c5358; }
+</style>
