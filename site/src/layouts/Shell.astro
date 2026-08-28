@@ -10,6 +10,7 @@
 import { rewrite } from '../lib/site.js';
 import { applySeo } from '../lib/seo.js';
 import { RECAPTCHA_SRC } from '../lib/protect.js';
+import { applySchemaPrice } from '../lib/price.js';
 import { skipLink } from '../lib/chrome.js';
 import Header from '../components/Header.astro';
 import Offcanvas from '../components/Offcanvas.astro';
@@ -20,7 +21,7 @@ const { page, needsRecaptcha = false } = Astro.props;
 
 // Elementor only enqueued reCAPTCHA's script on pages whose forms it had
 // configured with one; the forms we guard after the fact need it too.
-const head = rewrite(applySeo(page.head, page.route)) +
+const head = rewrite(applySchemaPrice(applySeo(page.head, page.route))) +
   (needsRecaptcha && !page.head.includes('recaptcha/api.js')
     ? `\n<script src="${RECAPTCHA_SRC}" async defer></script>\n`
     : '');

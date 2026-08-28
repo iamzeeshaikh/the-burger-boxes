@@ -40,9 +40,16 @@
     document.dispatchEvent(new CustomEvent('tbb:cart-changed'));
   }
 
+  // Wholesale minimum order quantity. Every path that can set a quantity --
+  // an add-to-cart link, the cart's own quantity box -- clamps to it, so a
+  // basket can never hold less than the run we actually print.
+  var MOQ = 100;
+
   function add(id, qty) {
     var cart = read();
-    cart[id] = (cart[id] || 0) + (qty || 1);
+    var want = parseInt(qty, 10);
+    if (!(want > 0)) want = MOQ;
+    cart[id] = Math.max(MOQ, (cart[id] || 0) + want);
     write(cart);
   }
 
@@ -107,7 +114,7 @@
             '<label class="screen-reader-text" for="qty-' + l.product.id + '">' +
             esc(l.product.name) + ' quantity</label>' +
             '<input type="number" id="qty-' + l.product.id + '" class="input-text qty text" ' +
-            'step="1" min="1" name="qty[' + l.product.id + ']" value="' + l.qty + '" ' +
+            'step="1" min="' + MOQ + '" name="qty[' + l.product.id + ']" value="' + l.qty + '" ' +
             'data-qty="' + l.product.id + '" /></div></td>' +
           '<td class="product-subtotal" data-title="Subtotal">' + money(l.total) + '</td>' +
         '</tr>';
@@ -401,7 +408,7 @@
         if (id && catalogue.products[id]) {
           e.preventDefault();
           e.stopImmediatePropagation();
-          var qty = parseInt(link.dataset.quantity || '1', 10) || 1;
+          var qty = parseInt(link.dataset.quantity || MOQ, 10) || MOQ;
           add(id, qty);
           var to = redirectFor(link);
           if (to) { location.assign(to.replace(/^https?:\/\/[^/]+/, '')); return; }
@@ -432,7 +439,7 @@
         var next = read();
         Array.prototype.forEach.call(document.querySelectorAll('[data-qty]'), function (input) {
           var q = parseInt(input.value, 10);
-          if (q > 0) next[input.dataset.qty] = q;
+          if (q > 0) next[input.dataset.qty] = Math.max(MOQ, q);
           else delete next[input.dataset.qty];
         });
         write(next);
