@@ -11,6 +11,10 @@ import { region } from '../lib/chrome.js';
 
 const { page } = Astro.props;
 
+// Same wrong tel: href as the header carries -- see Header.astro.
+const BAD_TEL = /href="tel:\+1-929-2141-874"/g;
+const GOOD_TEL = 'href="tel:+15033580443"';
+
 const ADDED = [
   ['/burger-box-packaging/', 'Burger Box Packaging'],
   ['/wholesale-burger-boxes/', 'Wholesale Burger Boxes'],
@@ -27,7 +31,7 @@ const extra = ADDED.map(([href, label], i) =>
   `menu-item-object-page menu-item-tbb-${i + 1}">` +
   `<a href="https://theburgerboxes.com${href}">${label}</a></li>`).join('');
 
-const original = region('footer', page);
+const original = region('footer', page).replace(BAD_TEL, GOOD_TEL);
 const footer = original.replace(LAST, (m) => m + extra);
 // An orphan page is the failure this exists to prevent, so a footer that did
 // not take the links fails the build rather than shipping quietly.

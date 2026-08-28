@@ -127,9 +127,58 @@ export function faqPage(content, route) {
   };
 }
 
+/**
+ * Who this business is.
+ *
+ * The captured markup carries an Organization node with a name, a URL and an
+ * empty sameAs, on eighteen of a hundred and eighteen pages. That is enough for
+ * a crawler to know the site has an owner and not enough for anything to say
+ * who it is. An answer engine asked "who supplies custom burger boxes" needs the
+ * entity resolved: a name, a place, a way to make contact.
+ *
+ * Every value here is already published on the site -- the contact block prints
+ * the address and phone, the footer the email, the header the logo. Nothing is
+ * asserted that a visitor cannot read. There is no sameAs because the site links
+ * to no social profiles; an invented one would be worse than none.
+ *
+ * It reuses the @id the captured node already claims, so the two describe one
+ * entity rather than two.
+ */
+export function organization() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': SITE + '#Organization',
+    name: 'The Burger Boxes',
+    url: SITE + '/',
+    logo: SITE + '/wp-content/uploads/2024/08/Burger-Boxes-1.png',
+    image: SITE + '/wp-content/uploads/2024/08/Burger-Boxes-1.png',
+    description: 'Custom burger boxes and food packaging printed to order at wholesale ' +
+      'prices for restaurants, cafes, food trucks, takeaways and caterers.',
+    email: 'info@theburgerboxes.com',
+    telephone: '+1-503-358-0443',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '409 N 7th Ave Unit #529',
+      addressLocality: 'Phoenix',
+      addressRegion: 'AZ',
+      postalCode: '85013',
+      addressCountry: 'US',
+    },
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'sales',
+      telephone: '+1-503-358-0443',
+      email: 'info@theburgerboxes.com',
+      availableLanguage: 'English',
+    },
+  };
+}
+
 /** Both blocks for one page, ready to drop into the head. */
+
 export function schemaFor(page) {
-  const blocks = [breadcrumbList(page.content)];
+  const blocks = [organization(), breadcrumbList(page.content)];
   if (page.route.startsWith('/product/')) blocks.push(faqPage(page.content, page.route));
 
   return blocks.filter(Boolean).map((b) =>

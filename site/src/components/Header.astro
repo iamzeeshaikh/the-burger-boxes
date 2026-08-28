@@ -14,6 +14,14 @@ import { region } from '../lib/chrome.js';
 
 const { page } = Astro.props;
 
+// The contact link in both regions displays "(503) 358-0443" and dials
+// tel:+1-929-2141-874 -- a different number, and not a dialable one: the
+// grouping is wrong for a US number. Every tap on the phone number on every
+// page went nowhere. The displayed number is the correct one, so the href is
+// corrected to match it.
+const BAD_TEL = /href="tel:\+1-929-2141-874"/g;
+const GOOD_TEL = 'href="tel:+15033580443"';
+
 const TEL = '(503) 358-0443';
 const TEL_HREF = 'tel:+15033580443';
 
@@ -32,6 +40,7 @@ const mobileCta = `<div class="tbb-mobile-cta">` +
 // the captured target=_blank / rel=nofollow only leaked a click and some link
 // equity. Applies to the desktop button too.
 const header = region('header', page)
+  .replace(BAD_TEL, GOOD_TEL)
   .replace(
     /(<a class="rishi-button btn-outline btn-small" href="[^"]*contact-us\/")\s*target=_blank rel="nofollow "/,
     '$1')
