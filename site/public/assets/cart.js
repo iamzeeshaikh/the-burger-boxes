@@ -452,7 +452,7 @@
     });
   }
 
-  fetch('/assets/catalogue.json')
+  fetch(window.__TBB_CATALOGUE || '/assets/catalogue.json')
     .then(function (r) { return r.json(); })
     .then(function (data) {
       catalogue = data;
