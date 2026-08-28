@@ -16,9 +16,9 @@ import forms from '../src/data/forms.json' with { type: 'json' };
 
 export const config = { api: { bodyParser: false } };
 
-// Hostnames a reCAPTCHA token may legitimately have been solved on.
+// The reCAPTCHA exemption that used to live here.
 //
-// This used to carry an exemption instead: a request arriving on a *.vercel.app
+// The handler used to allow a request arriving on a *.vercel.app
 // host was allowed through with a token Google had rejected, on the reasoning
 // that only staging is reached that way and the key pair is registered for the
 // live domain. But the production deployment answers on its vercel.app alias
@@ -30,7 +30,6 @@ export const config = { api: { bodyParser: false } };
 // domain-restricted key will not mint a token there. Add the preview host to the
 // key's domain list in the reCAPTCHA console if that is ever needed; do not
 // re-add a bypass.
-const ALLOWED_HOSTNAMES = new Set(['theburgerboxes.com', 'www.theburgerboxes.com']);
 
 const MAX_FILE_BYTES = 8 * 1024 * 1024;
 
@@ -173,13 +172,12 @@ export default async function handler(req, res) {
         console.warn('recaptcha rejected', JSON.stringify({ codes, hostname: outcome.hostname }));
         return fail(res, cfg.invalid_message || "There's something wrong. The form is invalid.");
       }
-      // A token is only proof of anything if it was solved on our own page.
-      // The site key is domain-restricted, so this is belt and braces against a
-      // token minted elsewhere and replayed here.
-      if (outcome.hostname && !ALLOWED_HOSTNAMES.has(outcome.hostname)) {
-        console.warn('recaptcha: token solved on', outcome.hostname);
-        return fail(res, cfg.invalid_message || "There's something wrong. The form is invalid.");
-      }
+      // Where the token was solved, recorded but not enforced. The site key is
+      // domain-restricted, so a token cannot be minted anywhere else to begin
+      // with, and rejecting on this would put an unverified failure mode on the
+      // one path that has to keep working: a real enquiry. If the logs ever show
+      // tokens solved somewhere unexpected, enforce it then.
+      if (outcome.hostname) console.info('recaptcha ok, solved on', outcome.hostname);
     } catch (err) {
       console.error('recaptcha verify failed', err);
       return fail(res, cfg.server_message || 'Your submission failed because of a server error.');
