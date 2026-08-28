@@ -16,6 +16,22 @@ import forms from '../src/data/forms.json' with { type: 'json' };
 
 export const config = { api: { bodyParser: false } };
 
+// Hostnames a reCAPTCHA token may legitimately have been solved on.
+//
+// This used to carry an exemption instead: a request arriving on a *.vercel.app
+// host was allowed through with a token Google had rejected, on the reasoning
+// that only staging is reached that way and the key pair is registered for the
+// live domain. But the production deployment answers on its vercel.app alias
+// too, and that alias is public -- so anything could post there with any string
+// as its token and be mailed straight through, which is exactly what was
+// happening. There is no exemption now.
+//
+// The cost is that forms cannot be exercised on a preview deployment, because a
+// domain-restricted key will not mint a token there. Add the preview host to the
+// key's domain list in the reCAPTCHA console if that is ever needed; do not
+// re-add a bypass.
+const ALLOWED_HOSTNAMES = new Set(['theburgerboxes.com', 'www.theburgerboxes.com']);
+
 const MAX_FILE_BYTES = 8 * 1024 * 1024;
 
 function parseMultipart(req) {
@@ -155,16 +171,14 @@ export default async function handler(req, res) {
       if (!outcome.success) {
         const codes = outcome['error-codes'] || [];
         console.warn('recaptcha rejected', JSON.stringify({ codes, hostname: outcome.hostname }));
-        // The key pair was registered for theburgerboxes.com, so a solved
-        // checkbox is rejected for its hostname on a preview deployment. That
-        // is a staging-only condition -- a production request never arrives on
-        // a vercel.app host -- so it is allowed through there and nowhere else.
-        const stagingHost = /\.vercel\.app$/.test(String(req.headers.host || ''));
-        const onlyHostname = codes.length === 0 || codes.every((c) => c === 'invalid-input-response');
-        if (!(stagingHost && onlyHostname)) {
-          return fail(res, cfg.invalid_message || "There's something wrong. The form is invalid.");
-        }
-        console.warn('recaptcha: accepted on the staging host despite', JSON.stringify(codes));
+        return fail(res, cfg.invalid_message || "There's something wrong. The form is invalid.");
+      }
+      // A token is only proof of anything if it was solved on our own page.
+      // The site key is domain-restricted, so this is belt and braces against a
+      // token minted elsewhere and replayed here.
+      if (outcome.hostname && !ALLOWED_HOSTNAMES.has(outcome.hostname)) {
+        console.warn('recaptcha: token solved on', outcome.hostname);
+        return fail(res, cfg.invalid_message || "There's something wrong. The form is invalid.");
       }
     } catch (err) {
       console.error('recaptcha verify failed', err);
