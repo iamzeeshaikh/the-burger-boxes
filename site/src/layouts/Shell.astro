@@ -39,3 +39,43 @@ const [tailBefore, tailAfter = ''] = rewrite(page.bodyTail).split('<!--JOINCHAT-
 
 <body class={page.bodyClass}><Fragment set:html={rewrite(page.bodyOpen) + OPEN_MAIN + skipLink + SEP_HEADER} /><Header page={page} /><Fragment set:html={SEP_OFFCANVAS} /><Offcanvas page={page} /><Fragment set:html={SEP_CONTENT} /><slot /><Fragment set:html={SEP_FOOTER} /><Footer page={page} /><Fragment set:html={CLOSE_MAIN + tailBefore} /><JoinChat page={page} /><Fragment set:html={tailAfter} /><script is:inline src="/assets/cart.js" defer></script></body>
 </html>
+
+<style is:global>
+  /* "Starting from" pricing -- see src/lib/price.js */
+  .tbb-from-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: #6b7280;
+    line-height: 1.3;
+  }
+  .tbb-price-line {
+    margin: 4px 0 18px;
+    padding: 14px 16px;
+    background: #fffaf0;
+    border: 1px solid #f5dfa8;
+    border-radius: 8px;
+  }
+  .tbb-price-label {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: #6b7280;
+  }
+  .tbb-price-amount {
+    font-size: 28px;
+    font-weight: 700;
+    color: #17191a;
+    line-height: 1.1;
+  }
+  .tbb-price-unit { font-size: 15px; color: #4c5358; }
+  .tbb-price-note {
+    margin: 6px 0 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #4c5358;
+  }
+</style>
