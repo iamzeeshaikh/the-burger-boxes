@@ -1,5 +1,97 @@
 ---
+// The captured header, plus two post-migration additions.
+//
+// WordPress only ever put the "Get Quote" button in the desktop header, so on a
+// phone the header was a logo and a hamburger and nothing else -- no CTA, no
+// phone number anywhere above the footer. Mobile is 46% of search clicks and
+// ranks better than desktop (avg position 9.1 vs 15.0), so that is the traffic
+// with no route to a quote at all.
+//
+// Both additions are made against the *rendered* header string rather than
+// chrome.json, because `chromeDiff` addresses the shared markup by token index
+// -- inserting a tag into chrome.json would shift every one of those indexes.
 import { region } from '../lib/chrome.js';
+
 const { page } = Astro.props;
+
+const TEL = '(503) 358-0443';
+const TEL_HREF = 'tel:+15033580443';
+
+const mobileCta = `<div class="tbb-mobile-cta">` +
+  `<a class="tbb-mobile-call" href="${TEL_HREF}" aria-label="Call ${TEL}">` +
+    `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" ` +
+    `stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">` +
+    `<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 ` +
+    `19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 ` +
+    `2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>` +
+    `</svg></a>` +
+  `<a class="tbb-mobile-quote" href="/contact-us/">Get Quote</a>` +
+  `</div>`;
+
+// Same tab, and followed: it is an internal link to our own contact page, so
+// the captured target=_blank / rel=nofollow only leaked a click and some link
+// equity. Applies to the desktop button too.
+const header = region('header', page)
+  .replace(
+    /(<a class="rishi-button btn-outline btn-small" href="[^"]*contact-us\/")\s*target=_blank rel="nofollow "/,
+    '$1')
+  .replace('<div id="rishi-header-trigger" class="rishi-header-trigger">',
+    mobileCta + '<div id="rishi-header-trigger" class="rishi-header-trigger">');
 ---
-<Fragment set:html={region('header', page)} />
+<Fragment set:html={header} />
+
+<style is:global>
+  .tbb-mobile-cta { display: none; }
+
+  @media (max-width: 991px) {
+    .rishi-header-mobile .header-items.second-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .tbb-mobile-cta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tbb-mobile-call,
+    .tbb-mobile-quote {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      border-radius: 6px;
+      font-weight: 600;
+      line-height: 1;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background-color .15s ease, color .15s ease;
+    }
+    .tbb-mobile-call {
+      width: 40px;
+      color: #111;
+      border: 1px solid rgba(17, 17, 17, .25);
+    }
+    .tbb-mobile-quote {
+      padding: 0 14px;
+      font-size: 14px;
+      color: #111;
+      background: #fdc300;
+      border: 1px solid #fdc300;
+    }
+    .tbb-mobile-call:hover, .tbb-mobile-call:focus-visible { background: rgba(17, 17, 17, .06); }
+    .tbb-mobile-quote:hover, .tbb-mobile-quote:focus-visible { background: #e8b200; border-color: #e8b200; }
+    .tbb-mobile-call:focus-visible, .tbb-mobile-quote:focus-visible {
+      outline: 2px solid #111;
+      outline-offset: 2px;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .tbb-mobile-quote { padding: 0 10px; font-size: 13px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tbb-mobile-call, .tbb-mobile-quote { transition: none; }
+  }
+</style>

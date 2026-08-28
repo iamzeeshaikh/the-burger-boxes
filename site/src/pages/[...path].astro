@@ -2,6 +2,8 @@
 import pages from '../data/pages.json';
 import { rewrite } from '../lib/site.js';
 import Shell from '../layouts/Shell.astro';
+import QuoteSection from '../components/QuoteSection.astro';
+import { protectForms } from '../lib/protect.js';
 
 // `_404` is served by src/pages/404.astro and `_search` by the /?s= endpoint,
 // so neither is built as a normal route.
@@ -18,5 +20,16 @@ export function getStaticPaths() {
 }
 
 const { page } = Astro.props;
+// The seven product-category archives shipped without any form; everything
+// else on the site already carries one.
+const showQuote = page.route.startsWith('/product-category/') &&
+  page.route !== '/product-category/uncategorized/';
+
+// The unguarded "Contact Us" copies on /about-us/ and the policy pages get the
+// same honeypot + reCAPTCHA every other form on the site already has.
+const { html: content, needsScript } = protectForms(rewrite(page.content));
 ---
-<Shell page={page}><Fragment set:html={rewrite(page.content)} /></Shell>
+<Shell page={page} needsRecaptcha={needsScript || showQuote}>
+  <Fragment set:html={content} />
+  {showQuote && <QuoteSection page={page} />}
+</Shell>

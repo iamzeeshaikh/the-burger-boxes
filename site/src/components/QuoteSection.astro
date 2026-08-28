@@ -1,0 +1,121 @@
+---
+import { quoteSection } from '../lib/quote.js';
+import { rewrite } from '../lib/site.js';
+const { page } = Astro.props;
+---
+<Fragment set:html={rewrite(quoteSection(page))} />
+<!-- the block carries a reCAPTCHA the archive pages never loaded a script for -->
+
+<style is:global>
+  .tbb-quote-section {
+    background: #f6f7f9;
+    border-top: 1px solid #e4e7ec;
+    padding: 56px 20px;
+  }
+  .tbb-quote-inner {
+    max-width: 1140px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 40px;
+    align-items: start;
+  }
+  .tbb-quote-intro h2 {
+    margin: 0 0 14px;
+    font-size: clamp(26px, 3.2vw, 34px);
+    line-height: 1.2;
+  }
+  .tbb-quote-intro p { margin: 0 0 14px; line-height: 1.65; }
+  .tbb-quote-points { margin: 0 0 18px; padding-left: 20px; line-height: 1.8; }
+  .tbb-quote-call { font-weight: 600; }
+  .tbb-quote-call a { text-decoration: underline; }
+  .tbb-quote-form {
+    background: #fff;
+    border: 1px solid #e4e7ec;
+    border-radius: 10px;
+    padding: 26px;
+  }
+  /* Elementor's per-post stylesheet (post-41.css) styles this widget for the
+     homepage only, and WordPress never enqueued it on the archives -- so the
+     borrowed widget arrives with a default blue button and hairline inputs.
+     These rules are the widget's own look, written out. */
+  .tbb-quote-form .elementor-button-align-center { text-align: left; }
+  .tbb-quote-form .elementor-form-fields-wrapper {
+    display: grid;
+    gap: 12px;
+  }
+  .tbb-quote-form .elementor-field-group { padding: 0; width: 100%; max-width: 100%; }
+  .tbb-quote-form .elementor-field-textual {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 16px; /* 16px keeps iOS from zooming the page on focus */
+    line-height: 1.4;
+    color: #17191a;
+    background: #fff;
+    border: 1px solid #cfd4dc;
+    border-radius: 8px;
+    box-shadow: none;
+  }
+  .tbb-quote-form textarea.elementor-field-textual { min-height: 120px; resize: vertical; }
+  .tbb-quote-form .elementor-field-textual::placeholder { color: #7a8288; opacity: 1; }
+  .tbb-quote-form .elementor-field-textual:focus {
+    border-color: #17191a;
+    outline: 2px solid #fdc300;
+    outline-offset: 1px;
+  }
+  .tbb-quote-form .elementor-upload-field {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: #4c5358;
+    background: #f6f7f9;
+    border: 1px dashed #cfd4dc;
+    border-radius: 8px;
+  }
+  .tbb-quote-form .elementor-upload-field::file-selector-button {
+    margin-right: 12px;
+    padding: 7px 12px;
+    font: inherit;
+    font-weight: 600;
+    color: #17191a;
+    background: #fff;
+    border: 1px solid #cfd4dc;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .tbb-quote-form .e-form__buttons { margin-top: 4px; }
+  .tbb-quote-form .elementor-widget-container .elementor-form .elementor-button[type="submit"] {
+    width: 100%;
+    padding: 14px 20px;
+    font-size: 17px;
+    font-weight: 700;
+    color: #17191a;
+    background: #fdc300;
+    border: 1px solid #fdc300;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color .15s ease;
+  }
+  .tbb-quote-form .elementor-widget-container .elementor-form .elementor-button[type="submit"]:hover,
+  .tbb-quote-form .elementor-widget-container .elementor-form .elementor-button[type="submit"]:focus-visible {
+    background: #e8b200;
+    border-color: #e8b200;
+  }
+  .tbb-quote-form .elementor-widget-container .elementor-form .elementor-button[type="submit"]:focus-visible {
+    outline: 2px solid #17191a;
+    outline-offset: 2px;
+  }
+  .tbb-quote-form .elementor-message { margin-top: 12px; font-size: 15px; }
+  /* the honeypot must stay hidden whatever else we style */
+  .tbb-quote-form .elementor-field-type-text > input[style*="display:none"] { display: none !important; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tbb-quote-form .elementor-widget-container .elementor-form .elementor-button[type="submit"] { transition: none; }
+  }
+
+  @media (max-width: 900px) {
+    .tbb-quote-section { padding: 40px 16px; }
+    .tbb-quote-inner { grid-template-columns: minmax(0, 1fr); gap: 26px; }
+    .tbb-quote-form { padding: 20px; }
+  }
+</style>

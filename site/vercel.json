@@ -189,6 +189,36 @@
       "source": "/wp-sitemap.xml",
       "destination": "https://theburgerboxes.com/sitemap.xml",
       "statusCode": 301
+    },
+    {
+      "source": "/author-sitemap.xml",
+      "destination": "https://theburgerboxes.com/sitemap.xml",
+      "statusCode": 301
+    },
+    {
+      "source": "/category-sitemap.xml",
+      "destination": "https://theburgerboxes.com/sitemap.xml",
+      "statusCode": 301
+    },
+    {
+      "source": "/page-sitemap.xml",
+      "destination": "https://theburgerboxes.com/sitemap.xml",
+      "statusCode": 301
+    },
+    {
+      "source": "/post-sitemap.xml",
+      "destination": "https://theburgerboxes.com/sitemap.xml",
+      "statusCode": 301
+    },
+    {
+      "source": "/product-sitemap.xml",
+      "destination": "https://theburgerboxes.com/sitemap.xml",
+      "statusCode": 301
+    },
+    {
+      "source": "/product_cat-sitemap.xml",
+      "destination": "https://theburgerboxes.com/sitemap.xml",
+      "statusCode": 301
     }
   ],
   "rewrites": [
@@ -260,6 +290,87 @@
         {
           "key": "Content-Type",
           "value": "application/rss+xml; charset=UTF-8"
+        }
+      ]
+    },
+    {
+      "source": "/cart/",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow"
+        }
+      ]
+    },
+    {
+      "source": "/checkout/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow"
+        }
+      ]
+    },
+    {
+      "source": "/checkout/",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow"
+        }
+      ]
+    },
+    {
+      "source": "/my-account/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow"
+        }
+      ]
+    },
+    {
+      "source": "/my-account/",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow"
+        }
+      ]
+    },
+    {
+      "source": "/thank-you/",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow"
+        }
+      ]
+    },
+    {
+      "source": "/author/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow"
+        }
+      ]
+    },
+    {
+      "source": "/category/uncategorized/",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow"
+        }
+      ]
+    },
+    {
+      "source": "/product-category/uncategorized/",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, follow"
         }
       ]
     }
