@@ -11,16 +11,10 @@
 // chrome.json, because `chromeDiff` addresses the shared markup by token index
 // -- inserting a tag into chrome.json would shift every one of those indexes.
 import { region } from '../lib/chrome.js';
+import { normalizePhone } from '../lib/schema.js';
 
 const { page } = Astro.props;
 
-// The contact link in both regions displays "(503) 358-0443" and dials
-// tel:+1-929-2141-874 -- a different number, and not a dialable one: the
-// grouping is wrong for a US number. Every tap on the phone number on every
-// page went nowhere. The displayed number is the correct one, so the href is
-// corrected to match it.
-const BAD_TEL = /href="tel:\+1-929-2141-874"/g;
-const GOOD_TEL = 'href="tel:+15033580443"';
 
 const TEL = '(503) 358-0443';
 const TEL_HREF = 'tel:+15033580443';
@@ -39,8 +33,7 @@ const mobileCta = `<div class="tbb-mobile-cta">` +
 // Same tab, and followed: it is an internal link to our own contact page, so
 // the captured target=_blank / rel=nofollow only leaked a click and some link
 // equity. Applies to the desktop button too.
-const header = region('header', page)
-  .replace(BAD_TEL, GOOD_TEL)
+const header = normalizePhone(region('header', page))
   .replace(
     /(<a class="rishi-button btn-outline btn-small" href="[^"]*contact-us\/")\s*target=_blank rel="nofollow "/,
     '$1')

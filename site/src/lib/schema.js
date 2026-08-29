@@ -209,3 +209,31 @@ const PASTE_CLASSES = /\sclass="(?:[^"]*\b(?:dark:prose-invert|text-message|whit
 export function stripPasteResidue(html) {
   return html.replace(PASTE_ATTRS, '').replace(PASTE_CLASSES, '');
 }
+
+/**
+ * One phone number on the site.
+ *
+ * The capture carried a second number, +1-929-2141-874: as the href behind a
+ * link that displayed (503) 358-0443 in the header and footer, and as visible
+ * body copy on the homepage and its four paginated copies. It is also not
+ * dialable as written -- a US number groups 3-3-4, and that groups 3-4-3.
+ *
+ * The business uses (503) 358-0443, so every form of the other number is
+ * replaced with it rather than only the one that was linked. Applied to the
+ * head, the body, the chrome and the search index, so there is nowhere left
+ * for it to survive.
+ */
+const OLD_TEL = /\+?1?[-\s]?\(?929\)?[-\s]?2141[-\s]?874\b|\+?1?[-\s]?\(?929\)?[-\s]?214[-\s]?1874\b|9292141874/g;
+const TEL_DISPLAY = '(503) 358-0443';
+const TEL_HREF = 'tel:+15033580443';
+
+export function normalizePhone(html) {
+  if (!html) return html;
+  // The site has one number, so every tel: href resolves to the same canonical
+  // form. That also repairs the ones the capture carried with a raw space or a
+  // leading %20 inside the URI -- tel:(503) 358-0443 and friends, on the contact
+  // and policy pages, which are not reliably dialable.
+  return html
+    .replace(/href="tel:[^"]*"/g, `href="${TEL_HREF}"`)
+    .replace(OLD_TEL, TEL_DISPLAY);
+}

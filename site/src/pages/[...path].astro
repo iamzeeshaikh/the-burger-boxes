@@ -6,7 +6,7 @@ import QuoteSection from '../components/QuoteSection.astro';
 import GuideList from '../components/GuideList.astro';
 import { protectForms } from '../lib/protect.js';
 import { applyPricing } from '../lib/price.js';
-import { stripPasteResidue } from '../lib/schema.js';
+import { stripPasteResidue, normalizePhone } from '../lib/schema.js';
 
 // `_404` is served by src/pages/404.astro and `_search` by the /?s= endpoint,
 // so neither is built as a normal route.
@@ -36,7 +36,7 @@ const showGuides = page.route === '/category/information/';
 // same honeypot + reCAPTCHA every other form on the site already has.
 const { html: guarded, needsScript } = protectForms(rewrite(page.content));
 // Every displayed price is a from-price, and each product page states its own.
-const content = stripPasteResidue(applyPricing(guarded, page.route));
+const content = normalizePhone(stripPasteResidue(applyPricing(guarded, page.route)));
 ---
 <Shell page={page} needsRecaptcha={needsScript || showQuote}>
   <Fragment set:html={content} />
