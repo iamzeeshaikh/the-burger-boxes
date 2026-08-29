@@ -1,7 +1,5 @@
 # The answer engines. These crawlers decide whether this site can be cited when
 # someone asks an assistant about burger packaging, and they are welcome here.
-# They are currently refused at the CDN, not by this file -- see the AI Crawl
-# Control settings on the Cloudflare zone.
 User-agent: OAI-SearchBot
 User-agent: ChatGPT-User
 User-agent: Claude-User
