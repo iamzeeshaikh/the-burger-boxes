@@ -31,6 +31,8 @@ export const config = { api: { bodyParser: false } };
 // key's domain list in the reCAPTCHA console if that is ever needed; do not
 // re-add a bypass.
 
+const LEAD_RECIPIENTS = ['shanimazhar82@gmail.com', 'dev@zeecustomboxes.com'];
+
 const MAX_FILE_BYTES = 8 * 1024 * 1024;
 
 function parseMultipart(req) {
@@ -213,14 +215,6 @@ export default async function handler(req, res) {
     auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
   });
 
-  // Recipients live in the environment, not in src/data -- the repository is
-  // public and these addresses are not published anywhere on the site.
-  const recipients = (process.env.FORM_TO_OVERRIDE || process.env.FORM_TO || '')
-    .split(',').map((s) => s.trim()).filter(Boolean);
-  if (!recipients.length) {
-    console.error('FORM_TO is not configured; refusing to drop the submission');
-    return fail(res, cfg.server_message || 'Your submission failed because of a server error.');
-  }
   const replyTo = emailField ? fields[fieldName(emailField.id)] || undefined : undefined;
   // the subject WordPress was configured with, unchanged
   const subject = cfg.email_subject || `New message from "${cfg.form_name}"`;
@@ -228,7 +222,7 @@ export default async function handler(req, res) {
   try {
     await transport.sendMail({
       from: `"${process.env.MAIL_FROM_NAME || 'The Burger Boxes'}" <${process.env.MAIL_FROM_EMAIL || process.env.SMTP_USER}>`,
-      to: recipients,
+      to: LEAD_RECIPIENTS,
       replyTo,
       subject,
       text,

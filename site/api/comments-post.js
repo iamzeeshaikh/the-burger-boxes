@@ -8,6 +8,7 @@
 import nodemailer from 'nodemailer';
 
 const SITE = 'https://theburgerboxes.com';
+const LEAD_RECIPIENTS = ['shanimazhar82@gmail.com', 'dev@zeecustomboxes.com'];
 
 function readForm(req) {
   return new Promise((resolve, reject) => {
@@ -59,7 +60,7 @@ export default async function handler(req, res) {
     });
     await transport.sendMail({
       from: `"${process.env.MAIL_FROM_NAME || 'The Burger Boxes'}" <${process.env.MAIL_FROM_EMAIL}>`,
-      to: (process.env.ORDER_TO || process.env.MAIL_FROM_EMAIL || '').split(',').map((s) => s.trim()).filter(Boolean),
+      to: LEAD_RECIPIENTS,
       replyTo: email,
       subject: 'New product review awaiting moderation',
       text: rows.map(([k, v]) => `${k}: ${v}`).join('\n'),

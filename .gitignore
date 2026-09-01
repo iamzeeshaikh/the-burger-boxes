@@ -11,3 +11,4 @@ site/.astro/
 .DS_Store
 ._*
 .vercel/
+.vercel

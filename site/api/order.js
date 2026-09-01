@@ -8,6 +8,8 @@
 import nodemailer from 'nodemailer';
 import catalogue from '../src/data/catalogue.json' with { type: 'json' };
 
+const LEAD_RECIPIENTS = ['shanimazhar82@gmail.com', 'dev@zeecustomboxes.com'];
+
 const STORE_NAME = 'The Burger Boxes';
 const STORE_ADDRESS = '409 N 7th Ave Unit #529 Phoenix, AZ 85013';
 const STORE_PHONE = '(503) 358-0443';
@@ -123,16 +125,10 @@ export default async function handler(req, res) {
   });
 
   const from = `"${process.env.MAIL_FROM_NAME || STORE_NAME}" <${process.env.MAIL_FROM_EMAIL}>`;
-  // recipients come from the environment; the store's own public address is the
-  // fallback so a missing variable can never send orders nowhere
-  const storeTo = (process.env.ORDER_TO_OVERRIDE || process.env.ORDER_TO ||
-    process.env.MAIL_FROM_EMAIL)
-    .split(',').map((s) => s.trim()).filter(Boolean);
-
   try {
     await transport.sendMail({
       from,
-      to: storeTo,
+      to: LEAD_RECIPIENTS,
       replyTo: billing.billing_email,
       subject: `[${STORE_NAME}] New order ${orderNumber} — ${money(total)} (Cash on delivery)`,
       text,
