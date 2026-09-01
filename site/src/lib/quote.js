@@ -35,7 +35,7 @@ export function quoteSection(page) {
 				<li>Gloss, matte and spot UV finishes</li>
 				<li>Free design service and free shipping</li>
 			</ul>
-			<p class="tbb-quote-call">Prefer to talk it through? Call <a href="tel:+15033580443">(503) 358-0443</a>.</p>
+			<p class="tbb-quote-call">Prefer to talk it through? Call <a href="tel:+15034614788">(503) 461-4788</a>.</p>
 		</div>
 		<div class="tbb-quote-form">${body}</div>
 	</div>
